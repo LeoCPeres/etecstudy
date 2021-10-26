@@ -13,10 +13,33 @@ if (isset($id_materia)) {
         $descricao = $mostrar['descricao'];
         $materia = $mostrar['materia'];
         $disciplina = $mostrar['disciplina'];
+        $verificado = $mostrar['verificado'];
+        $idVerificado = $mostrar['idVerificado'];
     }
 }
 
 ?>
+
+<head>
+    <script type="text/javascript">
+        window.onload = selecionaProfessor;
+
+        function selecionaProfessor() {
+            var isSelected = document.getElementById('selectVerificado');
+            var professor = document.getElementById("selectProfessor");
+            var lblProfessor = document.getElementById("lblProfessor");
+            var options = isSelected.options[isSelected.selectedIndex];
+
+            if (options.value != 1) {
+                professor.style.display = "none";
+                lblProfessor.style.display = "none";
+            } else {
+                lblProfessor.style.display = "";
+                professor.style.display = "";
+            }
+        }
+    </script>
+</head>
 
 <div class="col-md-12">
     <h1><?= isset($id_materia) ? "Editar" : "Escrever nova" ?> matéria</h1>
@@ -26,52 +49,51 @@ if (isset($id_materia)) {
     <form method="POST">
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Título</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" name="txt-titulo" placeholder="Título da matéria" value="<?= isset($id_materia) ? $titulo : "" ?>">
+            <input type="text" required class="form-control" id="exampleFormControlInput1" name="txt-titulo" placeholder="Título da matéria" value="<?= isset($id_materia) ? $titulo : "" ?>">
         </div>
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Descrição</label>
             <input type="text" class="form-control" id="exampleFormControlInput1" name="txt-desc" placeholder="Descrição da matéria" value="<?= isset($id_materia) ? $descricao : "" ?>">
         </div>
         <div class="row">
+
             <div class="col-md-4 mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Disciplina</label>
                 <select class="form-select" aria-label="Default select example" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
 
                     <option>Selecione uma disciplina</option>
-                    <option value="1">Artes</option>
-                    <option value="2">Biologia</option>
-                    <option value="3">Física</option>
-                    <option value="4">Geografia</option>
-                    <option value="5">História</option>
-                    <option value="6">Inglês</option>
-                    <option value="7">Literatura</option>
-                    <option value="8">Matemática</option>
-                    <option value="9">Português</option>
-                    <option value="10">Química</option>
-                    <option value="11">Redação</option>
+                    <option value="1" <?= isset($id_materia) ? (($disciplina == 1) ? 'selected' : '') : ''; ?>>Artes</option>       
+                    <option value="2" <?= isset($id_materia) ? (($disciplina == 2) ? 'selected' : '') : ''; ?>>Biologia</option>
+                    <option value="3" <?= isset($id_materia) ? (($disciplina == 3) ? 'selected' : '') : ''; ?>>Física</option>
+                    <option value="4" <?= isset($id_materia) ? (($disciplina == 4) ? 'selected' : '') : ''; ?>>Geografia</option>
+                    <option value="5" <?= isset($id_materia) ? (($disciplina == 5) ? 'selected' : '') : ''; ?>>História</option>
+                    <option value="6" <?= isset($id_materia) ? (($disciplina == 6) ? 'selected' : '') : ''; ?>>Inglês</option>
+                    <option value="7" <?= isset($id_materia) ? (($disciplina == 7) ? 'selected' : '') : ''; ?>>Literatura</option>
+                    <option value="8" <?= isset($id_materia) ? (($disciplina == 8) ? 'selected' : '') : ''; ?>>Matemática</option>
+                    <option value="9" <?= isset($id_materia) ? (($disciplina == 9) ? 'selected' : '') : ''; ?>>Português</option>
+                    <option value="10" <?= isset($id_materia) ? (($disciplina == 10) ? 'selected' : '') : ''; ?>>Química</option>
+                    <option value="11" <?= isset($id_materia) ? (($disciplina == 11) ? 'selected' : '') : ''; ?>>Redação</option>
 
                 </select>
             </div>
             <div class="col-md-4 mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Verificado</label>
-                <select class="form-select" aria-label="Default select example" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
+                <select onChange="selecionaProfessor()" class="form-select" name="option-verificado" aria-label="Default select example" id="selectVerificado" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>"> >
 
                     <option>Selecione opção</option>
-                    <option value="1">Sim</option>
-                    <option value="2">Não</option>
-
-
+                    <option value="1" <?= isset($id_materia) ? (($verificado == 1) ? 'selected' : '') : ""; ?>>Sim</option>        
+                    <option value="0" <?= isset($id_materia) ? (($verificado == 0) ? 'selected' : '') : "";?>>Não</option>
                 </select>
             </div>
             <div class="col-md-4 mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Professor</label>
-                <select class="form-select" aria-label="Default select example" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
+                <label for="exampleFormControlInput1" class="form-label" id="lblProfessor">Professor</label>
+                <select class="form-select" name="option-professor" aria-label="Default select example" id="selectProfessor" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
 
                     <option>Selecione um professor</option>
-                    <option value="1">Gerson - Sociologia</option>
-                    <option value="2">Rita - Matemática</option>
-                    <option value="2">Patrícia - Física</option>
-                    <option value="2">Kátia - Geografia</option>
+                    <option value="1" <?= isset($id_materia) ? (($idVerificado == 1) ? 'selected' : '') : ''; ?>>Gerson - Sociologia</option>  
+                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 2) ? 'selected' : '') : ''; ?>>Rita - Matemática</option>
+                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 3) ? 'selected' : '') : ''; ?>>Patrícia - Física</option>
+                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 4) ? 'selected' : '') : ''; ?>>Kátia - Geografia</option>
 
 
                 </select>
@@ -98,6 +120,8 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
     $formDesc = filter_input(INPUT_POST, 'txt-desc', FILTER_SANITIZE_STRING);
     $formDisc = filter_input(INPUT_POST, 'option-disciplina');
     $formMateria = filter_input(INPUT_POST, 'txt-materia');
+    $formVerificado = filter_input(INPUT_POST, 'option-verificado');
+    $formProfessor = filter_input(INPUT_POST, 'option-professor');
     $data = date('Y/m/d');
 
     //estabelecer conversa com class categoria
@@ -112,6 +136,8 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
     $materia->setDescricao($formDesc);
     $materia->setDisciplina($formDisc);
     $materia->setMateria($decodedWithUTF8);
+    $materia->setIdVerificado($formProfessor);
+    $materia->setVerificado($formVerificado);
     $materia->setData($data);
 
     //efetuar cadastro com msg

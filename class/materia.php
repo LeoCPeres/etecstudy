@@ -13,6 +13,7 @@ class Materia
     private $url;
     private $materia;
     private $verificado;
+    private $idVerificado;
     private $con;
 
     function getId_Materia()
@@ -51,6 +52,10 @@ class Materia
     {
         return $this->verificado;
     }
+    function getIdVerificado()
+    {
+        return $this->idVerificado;
+    }
 
     function setId_Materia($id_materia)
     {
@@ -88,13 +93,17 @@ class Materia
     {
         $this->verificado = $verificado;
     }
+    function setIdVerificado($idVerificado)
+    {
+        $this->idVerificado = $idVerificado;
+    }
 
     function salvar()
     {
         try {
             $this->con = new Conectar();
 
-            $sql = "INSERT INTO materia VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO materia VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $executar = $this->con->prepare($sql);
 
@@ -103,11 +112,12 @@ class Materia
             $executar->bindValue(1, $this->titulo);
             $executar->bindValue(2, $this->descricao);
             $executar->bindValue(3, $this->data);
-            $executar->bindValue(4, $this->url);
+            $executar->bindValue(4, $this->ct->montarUrl($this->titulo));
             $executar->bindValue(5, $this->disciplina);
             $executar->bindValue(6, $this->visitas);
             $executar->bindValue(7, $this->verificado);
             $executar->bindValue(8, $this->materia);
+            $executar->bindValue(9, $this->idVerificado);
 
             if ($executar->execute() == 1) {
                 return true;
@@ -129,6 +139,66 @@ class Materia
 
             if ($executar->execute() == 1) {
                 return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    function ConsultarPorTitulo($titulo)
+    {
+        try {
+            $this->con = new Conectar();
+            $sql = "SELECT * FROM materia WHERE titulo = ? ";
+            $executar = $this->con->prepare($sql);
+            $executar->bindValue(1, $titulo);
+
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    function editar()
+    {
+        try {
+            $this->con = new Conectar();
+            $this->ct = new Controles();
+
+            $sql = 
+            "UPDATE materia SET 
+                titulo = ?, 
+                descricao = ?, 
+                data = ?, 
+                url = ?, 
+                disciplina = ?, 
+                visitas = ?, 
+                verificado = ?, 
+                materia = ?, 
+                idVerificado = ? 
+            WHERE id_materia = ?";
+
+            $executar = $this->con->prepare($sql);
+
+            $executar->bindValue(1, $this->titulo);
+            $executar->bindValue(2, $this->descricao);
+            $executar->bindValue(3, $this->data);
+            $executar->bindValue(4, $this->ct->montarUrl($this->titulo));
+            $executar->bindValue(5, $this->disciplina);
+            $executar->bindValue(6, $this->visitas);
+            $executar->bindValue(7, $this->verificado);
+            $executar->bindValue(8, $this->materia);
+            $executar->bindValue(9, $this->idVerificado);
+
+            if ($executar->execute() == 1) {
+                return true;
             } else {
                 return false;
             }

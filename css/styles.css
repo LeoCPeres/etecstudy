@@ -21,6 +21,10 @@ body {
   color: #f52917 !important;
 }
 
+.link {
+  text-decoration: none;
+}
+
 .de-aluno {
   background-color: #0103ab;
   height: 50%;
@@ -84,6 +88,10 @@ body {
   overflow: hidden;
   width: 100%;
   white-space: nowrap;
+}
+
+.search-body {
+  color: black !important;
 }
 
 .search-body h4 {
