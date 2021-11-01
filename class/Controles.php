@@ -23,7 +23,7 @@ class Controles
         }
     }
 
-    public static function montarUrl($str)
+    public static function montarUrl($str, $int)
     {
         $str = strtr(
             $str,
@@ -42,6 +42,6 @@ class Controles
             )
         );
 
-        return strtolower(strip_tags(preg_replace(array("/[`^~\'”]/", "/([\s]{1,})/", "/[-]{2,}/"), array(null, "-", "-"), $str)));
+        return strtolower(strip_tags(preg_replace(array("/[`^~\'”]/", "/([\s]{1,})/", "/[-]{2,}/"), array(null, "-", "-"), $str . $int)));
     }
 }

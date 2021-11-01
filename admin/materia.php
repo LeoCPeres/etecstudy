@@ -6,6 +6,12 @@ date_default_timezone_set('America/Sao_Paulo');
 include_once '../class/Materia.php';
 $materia = new Materia();
 
+$disciplinas = $materia->ConsultarTodasDisciplinas();
+foreach ($disciplinas as $mostrarDisc) {
+    $id_disc = $mostrarDisc['id_disc'];
+    $disciplinaText = $mostrarDisc['disciplina'];
+}
+
 if (isset($id_materia)) {
     $dados = $materia->ConsultarPorId($id_materia);
     foreach ($dados as $mostrar) {
@@ -62,17 +68,19 @@ if (isset($id_materia)) {
                 <select class="form-select" aria-label="Default select example" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
 
                     <option>Selecione uma disciplina</option>
-                    <option value="1" <?= isset($id_materia) ? (($disciplina == 1) ? 'selected' : '') : ''; ?>>Artes</option>       
-                    <option value="2" <?= isset($id_materia) ? (($disciplina == 2) ? 'selected' : '') : ''; ?>>Biologia</option>
-                    <option value="3" <?= isset($id_materia) ? (($disciplina == 3) ? 'selected' : '') : ''; ?>>Física</option>
-                    <option value="4" <?= isset($id_materia) ? (($disciplina == 4) ? 'selected' : '') : ''; ?>>Geografia</option>
-                    <option value="5" <?= isset($id_materia) ? (($disciplina == 5) ? 'selected' : '') : ''; ?>>História</option>
-                    <option value="6" <?= isset($id_materia) ? (($disciplina == 6) ? 'selected' : '') : ''; ?>>Inglês</option>
-                    <option value="7" <?= isset($id_materia) ? (($disciplina == 7) ? 'selected' : '') : ''; ?>>Literatura</option>
-                    <option value="8" <?= isset($id_materia) ? (($disciplina == 8) ? 'selected' : '') : ''; ?>>Matemática</option>
-                    <option value="9" <?= isset($id_materia) ? (($disciplina == 9) ? 'selected' : '') : ''; ?>>Português</option>
-                    <option value="10" <?= isset($id_materia) ? (($disciplina == 10) ? 'selected' : '') : ''; ?>>Química</option>
-                    <option value="11" <?= isset($id_materia) ? (($disciplina == 11) ? 'selected' : '') : ''; ?>>Redação</option>
+                    <?php
+
+                    foreach ($disciplinas as $mostrarDisc) {
+
+
+
+                    ?>
+
+                        <option value=<?= $mostrarDisc['id_disc'] ?> <?= isset($id_materia) ? (($disciplina == $mostrarDisc['id_disc']) ? 'selected' : '') : ''; ?>> <?= $mostrarDisc['disciplina'] ?>
+                        </option>
+
+                    <?php } ?>
+
 
                 </select>
             </div>
@@ -81,8 +89,10 @@ if (isset($id_materia)) {
                 <select onChange="selecionaProfessor()" class="form-select" name="option-verificado" aria-label="Default select example" id="selectVerificado" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>"> >
 
                     <option>Selecione opção</option>
-                    <option value="1" <?= isset($id_materia) ? (($verificado == 1) ? 'selected' : '') : ""; ?>>Sim</option>        
-                    <option value="0" <?= isset($id_materia) ? (($verificado == 0) ? 'selected' : '') : "";?>>Não</option>
+                    <option value="1" <?= isset($id_materia) ? (($verificado == 1) ? 'selected' : '') : ""; ?>>Sim
+                    </option>
+                    <option value="0" <?= isset($id_materia) ? (($verificado == 0) ? 'selected' : '') : ""; ?>>Não
+                    </option>
                 </select>
             </div>
             <div class="col-md-4 mb-3">
@@ -90,10 +100,14 @@ if (isset($id_materia)) {
                 <select class="form-select" name="option-professor" aria-label="Default select example" id="selectProfessor" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
 
                     <option>Selecione um professor</option>
-                    <option value="1" <?= isset($id_materia) ? (($idVerificado == 1) ? 'selected' : '') : ''; ?>>Gerson - Sociologia</option>  
-                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 2) ? 'selected' : '') : ''; ?>>Rita - Matemática</option>
-                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 3) ? 'selected' : '') : ''; ?>>Patrícia - Física</option>
-                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 4) ? 'selected' : '') : ''; ?>>Kátia - Geografia</option>
+                    <option value="1" <?= isset($id_materia) ? (($idVerificado == 1) ? 'selected' : '') : ''; ?>>Gerson
+                        - Sociologia</option>
+                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 2) ? 'selected' : '') : ''; ?>>Rita -
+                        Matemática</option>
+                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 3) ? 'selected' : '') : ''; ?>>
+                        Patrícia - Física</option>
+                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 4) ? 'selected' : '') : ''; ?>>Kátia -
+                        Geografia</option>
 
 
                 </select>
@@ -104,7 +118,29 @@ if (isset($id_materia)) {
             <textarea class="form-control" id="editor" name="txt-materia" spellcheck="true"><?= isset($id_materia) ? $materia : "" ?></textarea>
 
         </div>
-        <input type="submit" class="btn btn-primary" style="float: right" name="btn-salvar" value="<?= isset($id_materia) ? "Salvar alterações" : "Cadastrar matéria" ?>"></input>
+        <?= isset($id_materia) ? '<input type="button" class="btn btn-primary" style="float: right" name="btn-editar-modal" data-bs-toggle="modal"
+            data-bs-target="#modal-save-changes" value="Salvar alterações"></input>' : '<input type="submit" class="btn btn-primary" style="float: right" name="btn-salvar"
+            value="Cadastrar matéria"></input>' ?>
+
+
+        <div class="modal fade" id="modal-save-changes" tabindex="-1" aria-labelledby="modal-save-changes" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Atenção!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Você realmente deseja salvar estas alterações?</p>
+                        <span>Esta ação não tem volta.</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <input type="submit" name="btn-editar" class="btn btn-primary" value="Sim, salvar."></input>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </form>
 
@@ -160,5 +196,58 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
             Falha no cadastro!
         </div>
 
+    <?php }
+}
+
+if (filter_input(INPUT_POST, 'btn-editar')) {
+    //pegar dados do form
+    $formTitulo = filter_input(INPUT_POST, 'txt-titulo', FILTER_SANITIZE_STRING);
+    $formDesc = filter_input(INPUT_POST, 'txt-desc', FILTER_SANITIZE_STRING);
+    $formDisc = filter_input(INPUT_POST, 'option-disciplina');
+    $formMateria = filter_input(INPUT_POST, 'txt-materia');
+    $formVerificado = filter_input(INPUT_POST, 'option-verificado');
+    $formProfessor = filter_input(INPUT_POST, 'option-professor');
+    $id_materia = filter_input(INPUT_GET, 'id_materia');
+    $data = date('Y/m/d');
+
+    $decodedWithoutUTF8 = urldecode($formMateria);
+    $decodedWithUTF8 = utf8_encode($decodedWithoutUTF8);
+
+    //estabelecer conversa com class categoria
+    include_once '../class/materia.php';
+    $materia = new Materia();
+
+    //enviar dados para atributos
+    $materia->setTitulo($formTitulo);
+    $materia->setDescricao($formDesc);
+    $materia->setDisciplina($formDisc);
+    $materia->setMateria($decodedWithUTF8);
+    $materia->setIdVerificado($formProfessor);
+    $materia->setVerificado($formVerificado);
+    $materia->setData($data);
+    $materia->setId_Materia($id_materia);
+
+
+    //efetuar cadastro com msg
+    if ($materia->editar()) {
+
+
+    ?>
+
+        <div class="alert alert-success mt-3" role="alert">
+            Editado com sucesso! Estamos te redirecionando para a página da matéria.
+            <meta http-equiv="refresh" content="3;URL=./?p=materia&id_materia=<?= $id_materia ?>">
+        </div>
+
+
+    <?php
+
+    } else {
+    ?>
+        <div class="alert alert-danger mt-3" role="alert">
+            Falha na edição!
+        </div>
+
 <?php }
 }
+?>

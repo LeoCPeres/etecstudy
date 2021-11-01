@@ -1,6 +1,7 @@
 <?php
 
 include_once('Conectar.php');
+include_once('Controles.php');
 
 class Materia
 {
@@ -102,6 +103,7 @@ class Materia
     {
         try {
             $this->con = new Conectar();
+            $this->ct = new Controles();
 
             $sql = "INSERT INTO materia VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -112,7 +114,7 @@ class Materia
             $executar->bindValue(1, $this->titulo);
             $executar->bindValue(2, $this->descricao);
             $executar->bindValue(3, $this->data);
-            $executar->bindValue(4, $this->ct->montarUrl($this->titulo));
+            $executar->bindValue(4, $this->ct->montarUrl($this->titulo, $this->id_materia));
             $executar->bindValue(5, $this->disciplina);
             $executar->bindValue(6, $this->visitas);
             $executar->bindValue(7, $this->verificado);
@@ -166,14 +168,50 @@ class Materia
         }
     }
 
+    function ConsultarTodos()
+    {
+        try {
+            $this->con = new Conectar();
+            $sql = "SELECT * FROM materia";
+            $executar = $this->con->prepare($sql);
+
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    function ConsultarTodasDisciplinas()
+    {
+        try {
+            $this->con = new Conectar();
+            $sql = "SELECT * FROM disciplinas";
+            $executar = $this->con->prepare($sql);
+
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
     function editar()
     {
         try {
             $this->con = new Conectar();
             $this->ct = new Controles();
 
-            $sql = 
-            "UPDATE materia SET 
+            $sql =
+                "UPDATE materia SET 
                 titulo = ?, 
                 descricao = ?, 
                 data = ?, 
@@ -190,12 +228,13 @@ class Materia
             $executar->bindValue(1, $this->titulo);
             $executar->bindValue(2, $this->descricao);
             $executar->bindValue(3, $this->data);
-            $executar->bindValue(4, $this->ct->montarUrl($this->titulo));
+            $executar->bindValue(4, $this->ct->montarUrl($this->titulo, $this->id_materia));
             $executar->bindValue(5, $this->disciplina);
             $executar->bindValue(6, $this->visitas);
             $executar->bindValue(7, $this->verificado);
             $executar->bindValue(8, $this->materia);
             $executar->bindValue(9, $this->idVerificado);
+            $executar->bindValue(10, $this->id_materia);
 
             if ($executar->execute() == 1) {
                 return true;

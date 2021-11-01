@@ -11,6 +11,16 @@ if (isset($pesquisa)) {
         $descricao = $mostrar['descricao'];
         $disciplina = $mostrar['disciplina'];
         $id_materia = $mostrar['id_materia'];
+        $url = $mostrar['url'];
+    }
+} else {
+    $dados = $materia->ConsultarTodos();
+    foreach ($dados as $mostrar) {
+        $titulo = $mostrar['titulo'];
+        $descricao = $mostrar['descricao'];
+        $disciplina = $mostrar['disciplina'];
+        $id_materia = $mostrar['id_materia'];
+        $url = $mostrar['url'];
     }
 }
 ?>
@@ -42,22 +52,42 @@ if (isset($pesquisa)) {
 
         ?>
 
-            <a href="?p=<?= $mostrar['titulo'] ?>" class="link">
-                <div class="col-md-12 col-12">
-                    <div class="row search-card">
-                        <div class="col-md-1 col-1 subject-div">
-                            <span class="subject"><?= $mostrar['disciplina'] ?></span>
-                        </div>
 
-                        <div class="col-md-11 col-11 search-body">
+            <div class="col-md-12 col-12">
+                <div class="row search-card">
+                    <div class="col-md-1 col-1 subject-div">
+                        <span class="subject">
+                            <?= $mostrar['disciplina'] == 1 ? "A" : "" ?>
+                            <?= $mostrar['disciplina'] == 2 ? "B" : "" ?>
+                            <?= $mostrar['disciplina'] == 3 ? "F" : "" ?>
+                            <?= $mostrar['disciplina'] == 4 ? "G" : "" ?>
+                            <?= $mostrar['disciplina'] == 5 ? "H" : "" ?>
+                            <?= $mostrar['disciplina'] == 6 ? "I" : "" ?>
+                            <?= $mostrar['disciplina'] == 7 ? "L" : "" ?>
+                            <?= $mostrar['disciplina'] == 8 ? "M" : "" ?>
+                            <?= $mostrar['disciplina'] == 9 ? "P" : "" ?>
+                            <?= $mostrar['disciplina'] == 10 ? "Q" : "" ?>
+                            <?= $mostrar['disciplina'] == 11 ? "R" : "" ?>
+
+
+                        </span>
+                    </div>
+
+                    <div class="col-md-10 col-10 search-body">
+                        <a href="?p=<?= $mostrar['url'] ?>" class="link">
                             <h4><?= $mostrar['titulo'] ?></h4>
                             <p>
                                 <?= $mostrar['descricao'] ?>
                             </p>
-                        </div>
+
+                        </a>
                     </div>
-                    <div class="col-md-12">&nbsp;</div>
+                    <div class="col-md-1 col-1">
+                        <a href="./admin/?p=materia&id_materia=<?= $mostrar['id_materia'] ?>" class="btn-search"><img src="./images/write.png" class="img-fluid p-3"></a>
+                    </div>
                 </div>
-            </a>
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+
         <?php } ?>
     </div>

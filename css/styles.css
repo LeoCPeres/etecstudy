@@ -87,6 +87,7 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   width: 100%;
+  color: black;
   white-space: nowrap;
 }
 
@@ -97,6 +98,7 @@ body {
 .search-body h4 {
   font-weight: 600;
   margin-left: 1rem;
+  color: black;
 }
 
 .btn-blue {
@@ -160,6 +162,75 @@ body {
   text-decoration: none;
   color: black;
   transition: color 0.2s;
+}
+
+.login-left {
+  background-color: #0103ab;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  flex-direction: column;
+}
+
+.login-right {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  width: 70%;
+  justify-self: center;
+  height: 100%;
+  margin-top: 50px;
+}
+
+.body-login {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.footer-login {
+  display: flex;
+  width: 100%;
+  gap: 4px;
+}
+
+.btn-oauth {
+  background: #f6f6f6;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 8px;
+  font-weight: 500;
+
+  transition: 0.2s;
+}
+
+.btn-oauth img {
+  width: 32px;
+}
+
+.btn-oauth:hover {
+  filter: brightness(0.9);
+  cursor: pointer;
+}
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  height: 40%;
 }
 
 @media (max-width: 768px) {
