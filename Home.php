@@ -29,8 +29,8 @@
         <div class="col-md-12">&nbsp;</div>
         <div class="col-md-12">&nbsp;</div>
         <div>
-          <button class="btn btn-blue">Faça Login</button>
-          <button class="btn btn-red">Cadastre-se</button>
+          <a href="./login/" class="btn btn-blue">Faça Login</a>
+          <a href="./registrar/" class="btn btn-red">Cadastre-se</a>
         </div>
         <div class="col-md-12">&nbsp;</div>
         <div class="col-md-12">&nbsp;</div>

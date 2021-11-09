@@ -200,20 +200,17 @@ body {
 
 .footer-login {
   display: flex;
+  flex-direction: column;
   width: 100%;
-  gap: 4px;
 }
 
 .btn-oauth {
-  background: #f6f6f6;
+  background: #f6f6f6 !important;
   padding: 0.5rem;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border-radius: 8px;
+  border-radius: 8px !important;
   font-weight: 500;
-
   transition: 0.2s;
+  border: none;
 }
 
 .btn-oauth img {
@@ -225,12 +222,21 @@ body {
   cursor: pointer;
 }
 
-.topo {
+.topo-register {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 80%;
-  height: 40%;
+  margin-top: 100px;
+}
+
+.topo-login {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
 @media (max-width: 768px) {
@@ -254,5 +260,22 @@ body {
 
   .exams-mobile {
     display: flex !important;
+  }
+
+  .login-left {
+    display: none;
+  }
+
+  .form-login {
+    width: 100%;
+    margin-top: 0px;
+  }
+
+  .topo-login {
+    margin-top: 60px;
+  }
+
+  .topo-register {
+    margin-top: 60px;
   }
 }
