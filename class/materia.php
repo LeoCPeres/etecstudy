@@ -10,6 +10,7 @@ class Materia
     private $descricao;
     private $data;
     private $disciplina;
+    private $id_disc;
     private $visitas;
     private $url;
     private $materia;
@@ -49,6 +50,10 @@ class Materia
     {
         return $this->url;
     }
+    function getId_Disc()
+    {
+        return $this->id_disc;
+    }
     function getVerificado()
     {
         return $this->verificado;
@@ -81,6 +86,10 @@ class Materia
     function setVisitas($visitas)
     {
         $this->visitas = $visitas;
+    }
+    function setId_Disc($id_disc)
+    {
+        $this->id_disc = $id_disc;
     }
     function setMateria($materia)
     {
@@ -186,23 +195,7 @@ class Materia
         }
     }
 
-    function ConsultarTodasDisciplinas()
-    {
-        try {
-            $this->con = new Conectar();
-            $sql = "SELECT * FROM disciplinas";
-            $executar = $this->con->prepare($sql);
 
-
-            if ($executar->execute() == 1) {
-                return $executar->fetchAll();
-            } else {
-                return false;
-            }
-        } catch (PDOException $exc) {
-            echo $exc->getMessage();
-        }
-    }
 
     function editar()
     {

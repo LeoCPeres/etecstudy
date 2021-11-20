@@ -1,6 +1,17 @@
 <?php
 session_start();
 
+include_once './class/Materia.php';
+include_once './class/disciplina.php';
+$materia = new Materia();
+$disc = new Disciplina();
+
+$disciplinas = $disc->ConsultarTodasDisciplinas();
+foreach ($disciplinas as $mostrarDisc) {
+    $id_disc = $mostrarDisc['id_disc'];
+    $disciplinaText = $mostrarDisc['disciplina'];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +34,7 @@ session_start();
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark navedit fixed-top" style="background-color: #0103ab !important; color: red !important">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark navedit fixed-top" style="background-color: #0103ab !important; color: red !important">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img src="./images/logo.png" alt="" /></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,39 +48,25 @@ session_start();
                     <li class="nav-item">
                         <a class="nav-link" href="?p=calouro">Área do calouro</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Cursos
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li>
-                        </ul>
-                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Disciplinas
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </li>
+                            <?php
+
+                            foreach ($disciplinas as $mostrarDisc) {
+
+                            ?>
+                                <li><a class="dropdown-item" href="<?= $mostrarDisc['id_disc'] ?> "><?= $mostrarDisc['disciplina'] ?></a></li>
+
+
+                            <?php } ?>
+
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Professores</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">Vestibulares</a>
                     </li>
@@ -90,21 +87,28 @@ session_start();
                         if (isset($_SESSION['usuario']) || isset($_SESSION['admin']) || isset($_SESSION['professor'])) :
 
                         ?>
-                            <li class="nav-item">
-                                <a href="./login/logout.php" class="nav-link" style="color: white">Sair</a>
+                            <li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
+                                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://avatars.githubusercontent.com/u/69376610?v=4" alt="" class="user-letter">
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a href="#" class="dropdown-item">Perfil</a></li>
+                                    <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
+
+                                </ul>
                             </li>
                         <?php
                         endif;
                         ?>
-                        <?php
-                        if (isset($_SESSION['usuario']) || isset($_SESSION['admin'])) :
-                        ?>
+                        <!-- <?php
+                                if (isset($_SESSION['usuario']) || isset($_SESSION['admin'])) :
+                                ?>
                             <li class="nav-item">
                                 <a href="./admin" class="nav-link" style="color: white">Admin</a>
                             </li>
                         <?php
-                        endif;
-                        ?>
+                                endif;
+                        ?> -->
                     </ul>
                 </div>
             </div>
@@ -131,7 +135,7 @@ session_start();
                     $pagina == '' || empty($pagina) || $pagina == 'index' ||
                     $pagina == 'index.php'
                 ) {
-                    include_once './home.php';
+                    isset($_SESSION['usuario']) ? (include_once './painel.php') : (include_once './home.php');
                 } else {
                     if (file_exists($pagina . '.php')) {
                         include_once $pagina . '.php';

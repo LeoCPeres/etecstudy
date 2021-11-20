@@ -4,9 +4,11 @@ $id_materia = filter_input(INPUT_GET, 'id_materia');
 date_default_timezone_set('America/Sao_Paulo');
 
 include_once '../class/Materia.php';
+include_once '../class/disciplina.php';
 $materia = new Materia();
+$disc = new Disciplina();
 
-$disciplinas = $materia->ConsultarTodasDisciplinas();
+$disciplinas = $disc->ConsultarTodasDisciplinas();
 foreach ($disciplinas as $mostrarDisc) {
     $id_disc = $mostrarDisc['id_disc'];
     $disciplinaText = $mostrarDisc['disciplina'];
@@ -39,6 +41,8 @@ if (isset($id_materia)) {
             if (options.value != 1) {
                 professor.style.display = "none";
                 lblProfessor.style.display = "none";
+                professor.value = 0;
+                console.log(professor.value);
             } else {
                 lblProfessor.style.display = "";
                 professor.style.display = "";
@@ -64,7 +68,11 @@ if (isset($id_materia)) {
         <div class="row">
 
             <div class="col-md-4 mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Disciplina</label>
+                <label for="exampleFormControlInput1" class="form-label" style="width: 100%;">
+                    Disciplina
+                    <a href="?p=disciplina/consultar" class="color-primary" style="float: right; cursor: pointer; text-decoration: none">+ Nova</a>
+
+                </label>
                 <select class="form-select" aria-label="Default select example" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
 
                     <option>Selecione uma disciplina</option>
@@ -119,8 +127,12 @@ if (isset($id_materia)) {
 
         </div>
         <?= isset($id_materia) ? '<input type="button" class="btn btn-primary" style="float: right" name="btn-editar-modal" data-bs-toggle="modal"
-            data-bs-target="#modal-save-changes" value="Salvar alterações"></input>' : '<input type="submit" class="btn btn-primary" style="float: right" name="btn-salvar"
-            value="Cadastrar matéria"></input>' ?>
+    data-bs-target="#modal-save-changes" value="Salvar alterações"></input>' : '<input type="submit" class="btn btn-primary" style="float: right" name="btn-salvar"
+    value="Cadastrar matéria"></input>' ?>
+        <?= isset($id_materia) ? '<input type="button" class="btn btn-danger" style="float: right; margin-right: 10px;" name="btn-editar-modal" data-bs-toggle="modal"
+    data-bs-target="#modal-save-changes" value="Deletar matéria"></input>' : '' ?>
+
+
 
 
         <div class="modal fade" id="modal-save-changes" tabindex="-1" aria-labelledby="modal-save-changes" aria-hidden="true">
@@ -137,6 +149,25 @@ if (isset($id_materia)) {
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         <input type="submit" name="btn-editar" class="btn btn-primary" value="Sim, salvar."></input>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal-save-disciplina" tabindex="-1" aria-labelledby="modal-save-disciplina" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cadastrar nova disciplina</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="exampleFormControlInput1" class="form-label">Nome da disciplina</label>
+                        <input type="" class="form-control" name="txt-disciplina-new" placeholder="Ex: matemática">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <input type="submit" name="btn-nova-disciplina" class="btn btn-primary" value="Cadastrar"></input>
                     </div>
                 </div>
             </div>
@@ -250,4 +281,9 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
 
 <?php }
 }
+
+
+
+
+
 ?>

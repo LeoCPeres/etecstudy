@@ -5,44 +5,60 @@
 <div class="col-md-12 col-12">&nbsp;</div>
 
 <div class="row">
-    <div class="col-md-3">
-       <a href="?p=materia" class="personalized-card">
-       <div class="card" style="width: 18rem;">
-            <img src="../images/write.png" class="img-fluid p-4" alt="..." style="width: 164px; align-self: center">
-            <div class="card-body">
-                <center><h5 class="card-title">Escrever matéria</h5></center>
-                
+    <div class="col-md-3 col-12">
+        <a href="?p=materia/nova" class="personalized-card">
+            <div class="card">
+                <img src="../images/write.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Escrever matéria</h5>
+                    </center>
+
+                </div>
             </div>
-        </div>
-       </a>
-    </div>
-    <div class="col-md-3">
-        <a href="" class="personalized-card">
-        <div class="card" style="width: 18rem;">
-            <img src="../images/eye.png" class="img-fluid p-4" alt="..." style="width: 164px; align-self: center">
-            <div class="card-body">
-                <center><h5 class="card-title">Matérias mais vistas</h5></center>
-                
-            </div>
-        </div>
         </a>
+        <div class="col-md-12">&nbsp;</div>
     </div>
-    <div class="col-md-3">
-        <div class="card" style="width: 18rem;">
-            <img src="../images/crown.png" class="img-fluid p-4" alt="..." style="width: 164px; align-self: center">
-            <div class="card-body">
-                <center><h5 class="card-title">Adicionar Admin</h5></center>
-                
+    <div class="col-md-3 col-12">
+        <a href="" class="personalized-card" disabled>
+            <div class="card">
+                <img src="../images/eye.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Matérias mais vistas</h5>
+                    </center>
+
+                </div>
             </div>
-        </div>
+        </a>
+        <div class="col-md-12">&nbsp;</div>
     </div>
-    <div class="col-md-3">
-        <div class="card" style="width: 18rem;">
-            <img src="../images/write.png" class="img-fluid p-4" alt="..." style="width: 164px; align-self: center">
-            <div class="card-body">
-                <center><h5 class="card-title">Escrever matéria</h5></center>
-                
+    <div class="col-md-3 col-12">
+        <a class="personalized-card">
+            <div class="card">
+                <img src="../images/crown.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Adicionar Admin</h5>
+                    </center>
+
+                </div>
             </div>
-        </div>
+        </a>
+        <div class="col-md-12">&nbsp;</div>
+    </div>
+    <div class="col-md-3 col-12">
+        <a href="?p=disciplina/consultar" class="personalized-card">
+            <div class="card">
+                <img src="../images/write.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Adicionar disciplina</h5>
+                    </center>
+
+                </div>
+            </div>
+        </a>
+        <div class="col-md-12">&nbsp;</div>
     </div>
 </div>

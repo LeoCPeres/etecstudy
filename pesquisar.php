@@ -2,7 +2,9 @@
 $pesquisa = filter_input(INPUT_GET, 'pesquisa');
 
 include_once('./class/materia.php');
+include_once('./class/disciplina.php');
 $materia = new Materia();
+$disc = new Disciplina();
 
 if (isset($pesquisa)) {
     $dados = $materia->ConsultarPorTitulo($pesquisa);
@@ -30,7 +32,7 @@ if (isset($pesquisa)) {
         <center>
             <div class="col-md-8 col-12">
                 <form class="input-group mb-3" method="POST">
-                    <input type="text" class="form-control" placeholder="Pesquise um assunto" aria-label="Recipient's username" aria-describedby="button-addon2" value="<?= isset($titulo) ? $titulo : "" ?>" />
+                    <input type="text" class="form-control" placeholder="Pesquise um assunto" aria-label="Recipient's username" aria-describedby="button-addon2" value="<?= isset($pesquisa) ? $titulo : "" ?>" />
                     <a class="btn btn-primary" type="submit" id="button-addon2">
                         <i class="bi bi-search"></i>
                     </a>
@@ -40,7 +42,7 @@ if (isset($pesquisa)) {
 
         <div class="col-md-12">&nbsp;</div>
 
-        <h1 class="title"> <?= isset($titulo) ? "Resultados para '" . $titulo . "'" : "Últimas matérias" ?></h1>
+        <h1 class="title"> <?= isset($pesquisa) ? "Resultados para '" . $titulo . "'" : "Últimas matérias" ?></h1>
         <div class="col-md-12">&nbsp;</div>
         <div class="col-md-12">&nbsp;</div>
 
@@ -57,21 +59,22 @@ if (isset($pesquisa)) {
                 <div class="row search-card">
                     <div class="col-md-1 col-1 subject-div">
                         <span class="subject">
-                            <?= $mostrar['disciplina'] == 1 ? "A" : "" ?>
-                            <?= $mostrar['disciplina'] == 2 ? "B" : "" ?>
-                            <?= $mostrar['disciplina'] == 3 ? "F" : "" ?>
-                            <?= $mostrar['disciplina'] == 4 ? "G" : "" ?>
-                            <?= $mostrar['disciplina'] == 5 ? "H" : "" ?>
-                            <?= $mostrar['disciplina'] == 6 ? "I" : "" ?>
-                            <?= $mostrar['disciplina'] == 7 ? "L" : "" ?>
-                            <?= $mostrar['disciplina'] == 8 ? "M" : "" ?>
-                            <?= $mostrar['disciplina'] == 9 ? "P" : "" ?>
-                            <?= $mostrar['disciplina'] == 10 ? "Q" : "" ?>
-                            <?= $mostrar['disciplina'] == 11 ? "R" : "" ?>
+                            <?php
+                            $dados_disc = $disc->ConsultarPorId($mostrar['disciplina']);
 
+                            foreach ($dados_disc as $mostrar_disc) {
+                                $firstLetter = substr($mostrar_disc['disciplina'], 0, 1);
+                            }
+
+                            echo $firstLetter;
+
+                            ?>
 
                         </span>
+
                     </div>
+
+
 
                     <div class="col-md-10 col-10 search-body">
                         <a href="?p=<?= $mostrar['url'] ?>" class="link">
@@ -83,7 +86,7 @@ if (isset($pesquisa)) {
                         </a>
                     </div>
                     <div class="col-md-1 col-1">
-                        <a href="./admin/?p=materia&id_materia=<?= $mostrar['id_materia'] ?>" class="btn-search"><img src="./images/write.png" class="img-fluid p-3"></a>
+                        <a href="./admin/?p=materia/nova&id_materia=<?= $mostrar['id_materia'] ?>" class="btn-search"><img src="./images/write.png" class="img-fluid p-3"></a>
                     </div>
                 </div>
                 <div class="col-md-12">&nbsp;</div>

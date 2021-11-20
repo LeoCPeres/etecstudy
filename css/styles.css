@@ -81,6 +81,12 @@ body {
   color: #8b8b8b;
 }
 
+.etc {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .search-body p {
   font-size: 16;
   margin-left: 1rem;
@@ -198,6 +204,19 @@ body {
   width: 100%;
 }
 
+.user-letter {
+  color: white;
+  background-color: #f52917;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  object-fit: fill;
+}
+
 .footer-login {
   display: flex;
   flex-direction: column;
@@ -277,5 +296,30 @@ body {
 
   .topo-register {
     margin-top: 60px;
+  }
+}
+
+@media (max-width: 1600px) {
+  .topo-register {
+    margin-top: 50px;
+  }
+
+  .btn-oauth {
+    background: #f6f6f6 !important;
+    padding: 0.5rem;
+    border-radius: 8px !important;
+    font-weight: 500;
+    transition: 0.2s;
+    border: none;
+    font-size: 13px;
+  }
+
+  .btn-oauth img {
+    width: 18px;
+  }
+
+  .btn-oauth:hover {
+    filter: brightness(0.9);
+    cursor: pointer;
   }
 }

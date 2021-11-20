@@ -35,7 +35,8 @@
             var txtsenha = document.getElementById('txtsenha');
             var btnsubmit = document.getElementById('btnsubmit');
 
-            if (txtnome.value == "" || txtsobrenome.value == "" || datepicker.value == "" || escolaridade.value == null || txttelefone.value == "" || txtemail.value == "" || txtsenha.value == "") {
+            if (txtnome.value == "" || txtsobrenome.value == "" || datepicker.value == "" || escolaridade.value == null ||
+                txttelefone.value == "" || txtemail.value == "" || txtsenha.value == "") {
                 btnsubmit.disabled = true;
             } else {
                 btnsubmit.disabled = false;
@@ -51,7 +52,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-5 login-right">
+            <div class="col-sm-5 login-right">
                 <div class="topo-register">
                     <div class="top-left"><a href="../login/"><i class="bi bi-arrow-left"></i></a></div>
                     <div class="top-right"><a href="../help/">Ajuda</a></div>
@@ -63,23 +64,23 @@
                     </div>
                     <div class="body-login">
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-sm-6 mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Nome</label>
-                                <input onChange="campos()" type="name" class="form-control" id="txtnome" name="txtnome" aria-describedby="emailHelp" placeholder="Ex: João Pedro" required>
+                                <input oninput="campos()" type="name" class="form-control" id="txtnome" name="txtnome" aria-describedby="emailHelp" placeholder="Ex: João Pedro" required>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-sm-6 mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Sobrenome</label>
-                                <input onChange="campos()" type="name" class="form-control" id="txtsobrenome" name="txtsobrenome" aria-describedby="emailHelp" placeholder="Silva" required>
+                                <input oninput="campos()" type="name" class="form-control" id="txtsobrenome" name="txtsobrenome" aria-describedby="emailHelp" placeholder="Silva" required>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 col-6 mb-3">
+                            <div class="col-sm-6 col-6 mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Data de nascimento</label>
-                                <input type="date" id="datepicker" class="form-control" name="txtdatanasc" required>
+                                <input oninput="campos()" type="date" id="datepicker" class="form-control" name="txtdatanasc" required>
                             </div>
-                            <div class="col-md-6 col-6 mb-3">
+                            <div class="col-sm-6 col-6 mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Escolaridade</label>
-                                <select onChange="campos()" class="form-select" name="txtescolaridade" required id="escolaridade">
+                                <select onselect="campos()" class="form-select" name="txtescolaridade" required id="escolaridade">
                                     <option>Selecione</option>
                                     <option value="1">Ensino médio completo</option>
                                     <option value="2">Ensino incompleto</option>
@@ -88,15 +89,15 @@
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Telefone</label>
-                            <input onChange="campos()" type="tel" class="form-control" id="txttelefone" name="txttelefone" aria-describedby="emailHelp" placeholder="DDD + Número" required>
+                            <input oninput="campos()" type="tel" class="form-control" id="txttelefone" name="txttelefone" aria-describedby="emailHelp" placeholder="DDD + Número" required>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Email</label>
-                            <input onChange="campos()" type="email" class="form-control" id="txtemail" name="txtemail" aria-describedby="emailHelp" placeholder="Ex: joaopedrosilva@gmail.com" required>
+                            <input oninput="campos()" type="email" class="form-control" id="txtemail" name="txtemail" aria-describedby="emailHelp" placeholder="Ex: joaopedrosilva@gmail.com" required>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Senha</label>
-                            <input onChange="campos()" type="password" class="form-control" id="txtsenha" name="txtsenha" aria-describedby="emailHelp" required>
+                            <input oninput="campos()" type="password" class="form-control" id="txtsenha" placeholder="Senha de pelo menos 8 caracteres" minlength="8" name="txtsenha" aria-describedby="emailHelp" required>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -108,13 +109,13 @@
 
                     <div class="footer-login">
                         <div class="row mt-4">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-sm-6 mb-3">
                                 <button class="btn-oauth w-100">
                                     <img src="../images/google-logo.svg" alt="">
                                     <span>Registro com Google</span>
                                 </button>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-sm-6 mb-3">
                                 <button class="btn-oauth w-100">
                                     <img src="../images/facebook.png" alt="">
                                     <span>Registro com Facebook</span>
@@ -126,7 +127,7 @@
 
                 </form>
             </div>
-            <div class="col-md-7 login-left">
+            <div class="col-sm-7 login-left">
                 <img src="../images/logo.svg" alt="" class="img-fluid">
             </div>
 

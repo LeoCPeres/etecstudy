@@ -211,7 +211,7 @@ class Usuario
             }
 
             if ($executar->execute() == 1) {
-                return true;
+                return $executar->fetchColumn();
             } else {
                 return false;
             }

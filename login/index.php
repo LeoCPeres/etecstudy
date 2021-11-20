@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +20,23 @@
     <link rel="shortcut icon" href="../images/blob.png" type="image/x-icon" />
 
     <title>Etec Study - Login</title>
+
+    <script type="text/javascript">
+        window.onload = campos;
+
+
+        function campos() {
+            var txtemail = document.getElementById('txtemail');
+            var txtsenha = document.getElementById('txtsenha');
+            var btnsubmit = document.getElementById('btnsubmit');
+
+            if (txtemail.value == "" || txtsenha.value == "") {
+                btnsubmit.disabled = true;
+            } else {
+                btnsubmit.disabled = false;
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -22,10 +44,10 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-7 login-left">
+            <div class="col-sm-7 login-left">
                 <img src="../images/logo.svg" alt="" class="img-fluid">
             </div>
-            <div class="col-md-5 login-right">
+            <div class="col-sm-5 login-right">
                 <div class="topo-login">
                     <div class="top-left"><a href="../"><i class="bi bi-arrow-left"></i></a></div>
                     <div class="top-right"><a href="../registrar/">Registrar-se</a></div>
@@ -38,28 +60,28 @@
                     <div class="body-login">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Email</label>
-                            <input type="email" class="form-control email-login" name="txtemail" aria-describedby="emailHelp" required>
+                            <input oninput="campos()" placeholder="Ex: joaopedrosilva@gmail.com" type="email" class="form-control email-login" id="txtemail" name="txtemail" aria-describedby="emailHelp" required>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Senha</label>
-                            <input type="password" class="form-control email-login" name="txtsenha" aria-describedby="emailHelp" required>
+                            <input oninput="campos()" id="txtsenha" placeholder="Senha de pelo menos 8 caracteres" type="password" class="form-control email-login" name="txtsenha" aria-describedby="emailHelp" required>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
                             <label class="form-check-label" for="exampleCheck1">Mantenha-me conectado</label>
                         </div>
-                        <input type="submit" class="btn btn-primary" name="btn-login" value="Entrar"></input>
+                        <input type="submit" id="btnsubmit" class="btn btn-primary" name="btn-login" value="Entrar"></input>
                     </div>
 
                     <div class="footer-login">
                         <div class="row mt-4">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-sm-6 mb-3">
                                 <button class="btn-oauth w-100">
                                     <img src="../images/google-logo.svg" alt="">
                                     <span>Login com o Google</span>
                                 </button>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-sm-6 mb-3">
                                 <button type="button" class="btn-oauth w-100">
                                     <img src="../images/facebook.png" alt="">
                                     <span>Login com o Facebook</span>
@@ -91,10 +113,12 @@ if (filter_input(INPUT_POST, 'btn-login')) {
     $user->setSenha($senha);
 
     if ($user->consultar() > 0) {
-        session_start();
+
         $_SESSION['usuario'] = $usuario;
 
-        header("Location: ../index.php");
+?>
+        <meta http-equiv="refresh" CONTENT="1;URL=../">
+<?php
     } else {
         $_SESSION['nao-autenticado'] = true;
         echo  '<div class="container">'
