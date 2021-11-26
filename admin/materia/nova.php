@@ -1,4 +1,5 @@
 <?php
+
 //capturar id da url
 $id_materia = filter_input(INPUT_GET, 'id_materia');
 date_default_timezone_set('America/Sao_Paulo');
@@ -23,6 +24,7 @@ if (isset($id_materia)) {
         $disciplina = $mostrar['disciplina'];
         $verificado = $mostrar['verificado'];
         $idVerificado = $mostrar['idVerificado'];
+        $id_imagem = $mostrar['imagem'];
     }
 }
 
@@ -30,24 +32,24 @@ if (isset($id_materia)) {
 
 <head>
     <script type="text/javascript">
-        window.onload = selecionaProfessor;
+    window.onload = selecionaProfessor;
 
-        function selecionaProfessor() {
-            var isSelected = document.getElementById('selectVerificado');
-            var professor = document.getElementById("selectProfessor");
-            var lblProfessor = document.getElementById("lblProfessor");
-            var options = isSelected.options[isSelected.selectedIndex];
+    function selecionaProfessor() {
+        var isSelected = document.getElementById('selectVerificado');
+        var professor = document.getElementById("selectProfessor");
+        var lblProfessor = document.getElementById("lblProfessor");
+        var options = isSelected.options[isSelected.selectedIndex];
 
-            if (options.value != 1) {
-                professor.style.display = "none";
-                lblProfessor.style.display = "none";
-                professor.value = 0;
-                console.log(professor.value);
-            } else {
-                lblProfessor.style.display = "";
-                professor.style.display = "";
-            }
+        if (options.value != 1) {
+            professor.style.display = "none";
+            lblProfessor.style.display = "none";
+            professor.value = 0;
+            console.log(professor.value);
+        } else {
+            lblProfessor.style.display = "";
+            professor.style.display = "";
         }
+    }
     </script>
 </head>
 
@@ -56,24 +58,39 @@ if (isset($id_materia)) {
 
     <div class="col-md-12">&nbsp;</div>
 
-    <form method="POST">
-        <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label">Título</label>
-            <input type="text" required class="form-control" id="exampleFormControlInput1" name="txt-titulo" placeholder="Título da matéria" value="<?= isset($id_materia) ? $titulo : "" ?>">
+    <form method="POST" enctype="multipart/form-data" name="formsalvar" id="formSalvar">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Título</label>
+                    <input type="text" required class="form-control" id="exampleFormControlInput1" name="txt-titulo"
+                        minlength="10" placeholder="Título da matéria" value="<?= isset($id_materia) ? $titulo : "" ?>">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Imagem de capa</label>
+                    <input class="form-control input-file" id="imagem" name="imagem" type="file" id="imagem"
+                        name="imagem">
+                </div>
+            </div>
         </div>
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Descrição</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" name="txt-desc" placeholder="Descrição da matéria" value="<?= isset($id_materia) ? $descricao : "" ?>">
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="txt-desc" minlength="25"
+                placeholder="Descrição da matéria" value="<?= isset($id_materia) ? $descricao : "" ?>">
         </div>
         <div class="row">
 
             <div class="col-md-4 mb-3">
                 <label for="exampleFormControlInput1" class="form-label" style="width: 100%;">
                     Disciplina
-                    <a href="?p=disciplina/consultar" class="color-primary" style="float: right; cursor: pointer; text-decoration: none">+ Nova</a>
+                    <a href="?p=disciplina/consultar" class="color-primary"
+                        style="float: right; cursor: pointer; text-decoration: none">+ Nova</a>
 
                 </label>
-                <select class="form-select" aria-label="Default select example" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
+                <select class="form-select" aria-label="Default select example" name="option-disciplina"
+                    value="<?= isset($id_materia) ? $disciplina : "" ?>">>
 
                     <option>Selecione uma disciplina</option>
                     <?php
@@ -84,8 +101,10 @@ if (isset($id_materia)) {
 
                     ?>
 
-                        <option value=<?= $mostrarDisc['id_disc'] ?> <?= isset($id_materia) ? (($disciplina == $mostrarDisc['id_disc']) ? 'selected' : '') : ''; ?>> <?= $mostrarDisc['disciplina'] ?>
-                        </option>
+                    <option value=<?= $mostrarDisc['id_disc'] ?>
+                        <?= isset($id_materia) ? (($disciplina == $mostrarDisc['id_disc']) ? 'selected' : '') : ''; ?>>
+                        <?= $mostrarDisc['disciplina'] ?>
+                    </option>
 
                     <?php } ?>
 
@@ -94,7 +113,9 @@ if (isset($id_materia)) {
             </div>
             <div class="col-md-4 mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Verificado</label>
-                <select onChange="selecionaProfessor()" class="form-select" name="option-verificado" aria-label="Default select example" id="selectVerificado" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>"> >
+                <select onChange="selecionaProfessor()" class="form-select" name="option-verificado"
+                    aria-label="Default select example" id="selectVerificado" name="option-disciplina"
+                    value="<?= isset($id_materia) ? $disciplina : "" ?>"> >
 
                     <option>Selecione opção</option>
                     <option value="1" <?= isset($id_materia) ? (($verificado == 1) ? 'selected' : '') : ""; ?>>Sim
@@ -105,7 +126,8 @@ if (isset($id_materia)) {
             </div>
             <div class="col-md-4 mb-3">
                 <label for="exampleFormControlInput1" class="form-label" id="lblProfessor">Professor</label>
-                <select class="form-select" name="option-professor" aria-label="Default select example" id="selectProfessor" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
+                <select class="form-select" name="option-professor" aria-label="Default select example"
+                    id="selectProfessor" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
 
                     <option>Selecione um professor</option>
                     <option value="1" <?= isset($id_materia) ? (($idVerificado == 1) ? 'selected' : '') : ''; ?>>Gerson
@@ -123,7 +145,8 @@ if (isset($id_materia)) {
         </div>
         <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Matéria</label>
-            <textarea class="form-control" id="editor" name="txt-materia" spellcheck="true"><?= isset($id_materia) ? $materia : "" ?></textarea>
+            <textarea class="form-control" id="editor" name="txt-materia" minlength="50" rows="12"
+                spellcheck="true"><?= isset($id_materia) ? $materia : "" ?></textarea>
 
         </div>
         <?= isset($id_materia) ? '<input type="button" class="btn btn-primary" style="float: right" name="btn-editar-modal" data-bs-toggle="modal"
@@ -135,7 +158,8 @@ if (isset($id_materia)) {
 
 
 
-        <div class="modal fade" id="modal-save-changes" tabindex="-1" aria-labelledby="modal-save-changes" aria-hidden="true">
+        <div class="modal fade" id="modal-save-changes" tabindex="-1" aria-labelledby="modal-save-changes"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -154,7 +178,8 @@ if (isset($id_materia)) {
             </div>
         </div>
 
-        <div class="modal fade" id="modal-save-disciplina" tabindex="-1" aria-labelledby="modal-save-disciplina" aria-hidden="true">
+        <div class="modal fade" id="modal-save-disciplina" tabindex="-1" aria-labelledby="modal-save-disciplina"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -167,7 +192,8 @@ if (isset($id_materia)) {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <input type="submit" name="btn-nova-disciplina" class="btn btn-primary" value="Cadastrar"></input>
+                        <input type="submit" name="btn-nova-disciplina" class="btn btn-primary"
+                            value="Cadastrar"></input>
                     </div>
                 </div>
             </div>
@@ -191,6 +217,11 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
     $formProfessor = filter_input(INPUT_POST, 'option-professor');
     $data = date('Y/m/d');
 
+    $imagem = $_FILES['imagem']['name'];
+    $temp_imagem = $_FILES['imagem']['tmp_name'];
+    $extensao = strtolower(pathinfo($imagem, PATHINFO_EXTENSION));
+    $imagem = uniqid(time()) . "." . $extensao;
+
     //estabelecer conversa com class categoria
     include_once '../class/materia.php';
     $materia = new Materia();
@@ -206,29 +237,35 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
     $materia->setIdVerificado($formProfessor);
     $materia->setVerificado($formVerificado);
     $materia->setData($data);
+    $materia->setImagem($imagem);
+    $materia->setTempImagem($temp_imagem);
 
-    //efetuar cadastro com msg
-    if ($materia->salvar()) {
+
+    if (strstr('.jpg;.jpeg;.png', $extensao)) {
+        //efetuar cadastro com msg
+        if ($materia->salvar()) {
 
 
 ?>
 
-        <div class="alert alert-primary 
+<div class="alert alert-primary 
         mt-3" role="alert">
-            Cadastrado com sucesso
-        </div>
+    Cadastrado com sucesso
+</div>
 
 
-    <?php
+<?php
 
-    } else {
-    ?>
-        <div class="alert alert-danger mt-3" role="alert">
-            Falha no cadastro!
-        </div>
+        } else {
+        ?>
+<div class="alert alert-danger mt-3" role="alert">
+    Falha no cadastro!
+</div>
 
-    <?php }
+<?php }
+    }
 }
+
 
 if (filter_input(INPUT_POST, 'btn-editar')) {
     //pegar dados do form
@@ -240,6 +277,11 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
     $formProfessor = filter_input(INPUT_POST, 'option-professor');
     $id_materia = filter_input(INPUT_GET, 'id_materia');
     $data = date('Y/m/d');
+
+    $imagem = $_FILES['imagem']['name'];
+    $temp_imagem = $_FILES['imagem']['tmp_name'];
+    $extensao = strtolower(pathinfo($imagem, PATHINFO_EXTENSION));
+    $imagem = uniqid(time()) . "." . $extensao;
 
     $decodedWithoutUTF8 = urldecode($formMateria);
     $decodedWithUTF8 = utf8_encode($decodedWithoutUTF8);
@@ -257,29 +299,32 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
     $materia->setVerificado($formVerificado);
     $materia->setData($data);
     $materia->setId_Materia($id_materia);
+    $materia->setImagem($imagem);
+    $materia->setTempImagem($temp_imagem);
+
+    if (strstr('.jpg;.jpeg;.png', $extensao)) {
+        //efetuar cadastro com msg
+        if ($materia->editar()) {
 
 
-    //efetuar cadastro com msg
-    if ($materia->editar()) {
+        ?>
+
+<div class="alert alert-success mt-3" role="alert">
+    Editado com sucesso! Estamos te redirecionando para o painel do professor.
+    <meta http-equiv="refresh" content="3;URL=../">
+</div>
 
 
-    ?>
+<?php
 
-        <div class="alert alert-success mt-3" role="alert">
-            Editado com sucesso! Estamos te redirecionando para a página da matéria.
-            <meta http-equiv="refresh" content="3;URL=./?p=materia&id_materia=<?= $id_materia ?>">
-        </div>
-
-
-    <?php
-
-    } else {
-    ?>
-        <div class="alert alert-danger mt-3" role="alert">
-            Falha na edição!
-        </div>
+        } else {
+        ?>
+<div class="alert alert-danger mt-3" role="alert">
+    Falha na edição!
+</div>
 
 <?php }
+    }
 }
 
 

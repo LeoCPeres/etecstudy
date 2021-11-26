@@ -100,15 +100,15 @@ foreach ($disciplinas as $mostrarDisc) {
                         <?php
                         endif;
                         ?>
-                        <!-- <?php
-                                if (isset($_SESSION['usuario']) || isset($_SESSION['admin'])) :
-                                ?>
+                        <?php
+                        if (isset($_SESSION['usuario']) || isset($_SESSION['admin'])) :
+                        ?>
                             <li class="nav-item">
                                 <a href="./admin" class="nav-link" style="color: white">Admin</a>
                             </li>
                         <?php
-                                endif;
-                        ?> -->
+                        endif;
+                        ?>
                     </ul>
                 </div>
             </div>

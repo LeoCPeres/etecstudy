@@ -1,10 +1,15 @@
 <?php
 session_start();
 
-include_once '../class/Materia.php';
-$materia = new Materia();
+// if (!$_SESSION['admin'] || !$_SESSION['usuario']) {
+//     header('Location: ../');
+//     exit();
+// }
 
-$disciplinas = $materia->ConsultarTodasDisciplinas();
+include_once '../class/disciplina.php';
+$disc = new Disciplina();
+
+$disciplinas = $disc->ConsultarTodasDisciplinas();
 foreach ($disciplinas as $mostrarDisc) {
     $id_disc = $mostrarDisc['id_disc'];
     $disciplinaText = $mostrarDisc['disciplina'];
@@ -145,13 +150,19 @@ foreach ($disciplinas as $mostrarDisc) {
                         <?php
                         endif;
                         ?>
-
                         <?php
                         if (isset($_SESSION['usuario']) || isset($_SESSION['admin']) || isset($_SESSION['professor'])) :
 
                         ?>
-                            <li class="nav-item">
-                                <a href="../login/logout.php" class="nav-link" style="color: white">Sair</a>
+                            <li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
+                                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://avatars.githubusercontent.com/u/69376610?v=4" alt="" class="user-letter">
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a href="#" class="dropdown-item">Perfil</a></li>
+                                    <li><a href="../login/logout.php" class="dropdown-item">Sair</a></li>
+
+                                </ul>
                             </li>
                         <?php
                         endif;

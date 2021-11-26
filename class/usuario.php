@@ -15,6 +15,9 @@ class Usuario
     private $estudante_etec;
     private $id_professor;
     private $nascimento;
+    private $last_view;
+    private $imagem;
+    private $temp_imagem;
     private $con;
 
     function getId()
@@ -35,6 +38,14 @@ class Usuario
     function getSobrenome()
     {
         return $this->sobrenome;
+    }
+    function getTempImagem()
+    {
+        return $this->temp_imagem;
+    }
+    function getImagem()
+    {
+        return $this->imagem;
     }
 
     function getTelefone()
@@ -65,6 +76,11 @@ class Usuario
     function getEstudante()
     {
         return $this->estudante_etec;
+    }
+
+    function getLastView()
+    {
+        return $this->last_view;
     }
 
     function getIdProfessor()
@@ -126,6 +142,19 @@ class Usuario
         $this->id_professor = $id_professor;
     }
 
+    function setLastView($last_view)
+    {
+        $this->last_view = $last_view;
+    }
+    function setTempImagem($temp_imagem)
+    {
+        $this->temp_imagem = $temp_imagem;
+    }
+    function setImagem($imagem)
+    {
+        $this->imagem = $imagem;
+    }
+
     function GeraIdProfessor($int)
     {
         $idProfessor = 0;
@@ -148,7 +177,7 @@ class Usuario
                 return false;
             }
 
-            $sql = "INSERT INTO usuario VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO usuario VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $executar = $this->con->prepare($sql);
 
@@ -163,6 +192,9 @@ class Usuario
             $executar->bindValue(8, $this->estudante_etec);
             $executar->bindValue(9, $this->id_professor);
             $executar->bindValue(10, $this->nascimento);
+            $executar->bindValue(11, $this->last_view);
+            $executar->bindValue(12, $this->imagem);
+            $executar->bindValue(13, $this->temp_imagem);
 
 
             if ($executar->execute() == 1) {
@@ -185,6 +217,26 @@ class Usuario
             $executar = $this->con->prepare($sql);
 
             $executar->bindValue(1, $this->email);
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+    function pegarDadosUsuario($email)
+    {
+        try {
+            $this->con = new Conectar();
+
+            $sql = "SELECT * FROM usuario WHERE email = ?";
+
+            $executar = $this->con->prepare($sql);
+
+            $executar->bindValue(1, $email);
 
             if ($executar->execute() == 1) {
                 return $executar->fetchAll();

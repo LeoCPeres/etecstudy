@@ -81,11 +81,11 @@ body {
   color: #8b8b8b;
 }
 
-.etc {
+/* .etc {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-}
+} */
 
 .search-body p {
   font-size: 16;

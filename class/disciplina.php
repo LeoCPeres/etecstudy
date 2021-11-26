@@ -10,6 +10,23 @@ class Disciplina
     private $id_disc;
     private $con;
 
+    function getDisciplina()
+    {
+        return $this->disciplina;
+    }
+    function setDisciplina($disciplina)
+    {
+        $this->disciplina = $disciplina;
+    }
+    function getIdDisciplina()
+    {
+        return $this->id_disc;
+    }
+    function setIdDisciplina($id_disc)
+    {
+        $this->id_disc = $id_disc;
+    }
+
     function ConsultarTodasDisciplinas()
     {
         try {

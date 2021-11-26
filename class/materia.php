@@ -16,6 +16,8 @@ class Materia
     private $materia;
     private $verificado;
     private $idVerificado;
+    private $imagem;
+    private $temp_imagem;
     private $con;
 
     function getId_Materia()
@@ -37,6 +39,14 @@ class Materia
     function getDisciplina()
     {
         return $this->disciplina;
+    }
+    function getImagem()
+    {
+        return $this->imagem;
+    }
+    function getTempImagem()
+    {
+        return $this->temp_imagem;
     }
     function getVisitas()
     {
@@ -79,6 +89,14 @@ class Materia
     {
         $this->data = $data;
     }
+    function setImagem($imagem)
+    {
+        $this->imagem = $imagem;
+    }
+    function setTempImagem($temp_imagem)
+    {
+        $this->temp_imagem = $temp_imagem;
+    }
     function setDisciplina($disciplina)
     {
         $this->disciplina = $disciplina;
@@ -114,11 +132,9 @@ class Materia
             $this->con = new Conectar();
             $this->ct = new Controles();
 
-            $sql = "INSERT INTO materia VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO materia VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $executar = $this->con->prepare($sql);
-
-
 
             $executar->bindValue(1, $this->titulo);
             $executar->bindValue(2, $this->descricao);
@@ -129,8 +145,11 @@ class Materia
             $executar->bindValue(7, $this->verificado);
             $executar->bindValue(8, $this->materia);
             $executar->bindValue(9, $this->idVerificado);
+            $executar->bindValue(10, $this->imagem);
+            $executar->bindValue(11, $this->temp_imagem);
 
             if ($executar->execute() == 1) {
+                $this->ct->enviarArquivo($this->temp_imagem, "../img/capas/" . $this->imagem, $this->imagem);
                 return true;
             } else {
                 return false;
@@ -195,7 +214,23 @@ class Materia
         }
     }
 
+    function ConsultarTop4()
+    {
+        try {
+            $this->con = new Conectar();
+            $sql = "SELECT * FROM materia order by id_materia DESC limit 4 ";
+            $executar = $this->con->prepare($sql);
 
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
 
     function editar()
     {
@@ -213,7 +248,9 @@ class Materia
                 visitas = ?, 
                 verificado = ?, 
                 materia = ?, 
-                idVerificado = ? 
+                idVerificado = ?,
+                imagem = ?,
+                temp_imagem = ? 
             WHERE id_materia = ?";
 
             $executar = $this->con->prepare($sql);
@@ -227,9 +264,12 @@ class Materia
             $executar->bindValue(7, $this->verificado);
             $executar->bindValue(8, $this->materia);
             $executar->bindValue(9, $this->idVerificado);
-            $executar->bindValue(10, $this->id_materia);
+            $executar->bindValue(12, $this->id_materia);
+            $executar->bindValue(10, $this->imagem);
+            $executar->bindValue(11, $this->temp_imagem);
 
             if ($executar->execute() == 1) {
+                $this->ct->enviarArquivo($this->temp_imagem, "../img/capas/" . $this->imagem, $this->imagem);
                 return true;
             } else {
                 return false;
