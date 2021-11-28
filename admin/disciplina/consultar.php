@@ -35,10 +35,7 @@ $id_disc = filter_input(INPUT_GET, 'id_disc');
                             <?= $mostrar['disciplina'] ?>
                         </td>
                         <td>
-                            <a href="?p=disciplina/excluir&id_disc=<?= $mostrar['id_disc'] ?>" class="btn btn-danger"
-                                data-confirm="Excluir registro?">
-                                <i class="bi bi-trash-fill"></i>
-                            </a>
+
                             <a href="?p=cliente/cadastrar&id_cliente=" class="btn btn-primary ml-2">
                                 <i class="bi bi-pencil-fill"></i>
                             </a>

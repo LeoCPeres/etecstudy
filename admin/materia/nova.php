@@ -22,36 +22,11 @@ if (isset($id_materia)) {
         $descricao = $mostrar['descricao'];
         $materia = $mostrar['materia'];
         $disciplina = $mostrar['disciplina'];
-        $verificado = $mostrar['verificado'];
-        $idVerificado = $mostrar['idVerificado'];
         $id_imagem = $mostrar['imagem'];
     }
 }
 
 ?>
-
-<head>
-    <script type="text/javascript">
-    window.onload = selecionaProfessor;
-
-    function selecionaProfessor() {
-        var isSelected = document.getElementById('selectVerificado');
-        var professor = document.getElementById("selectProfessor");
-        var lblProfessor = document.getElementById("lblProfessor");
-        var options = isSelected.options[isSelected.selectedIndex];
-
-        if (options.value != 1) {
-            professor.style.display = "none";
-            lblProfessor.style.display = "none";
-            professor.value = 0;
-            console.log(professor.value);
-        } else {
-            lblProfessor.style.display = "";
-            professor.style.display = "";
-        }
-    }
-    </script>
-</head>
 
 <div class="col-md-12">
     <h1><?= isset($id_materia) ? "Editar" : "Escrever nova" ?> matéria</h1>
@@ -107,37 +82,6 @@ if (isset($id_materia)) {
                     </option>
 
                     <?php } ?>
-
-
-                </select>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Verificado</label>
-                <select onChange="selecionaProfessor()" class="form-select" name="option-verificado"
-                    aria-label="Default select example" id="selectVerificado" name="option-disciplina"
-                    value="<?= isset($id_materia) ? $disciplina : "" ?>"> >
-
-                    <option>Selecione opção</option>
-                    <option value="1" <?= isset($id_materia) ? (($verificado == 1) ? 'selected' : '') : ""; ?>>Sim
-                    </option>
-                    <option value="0" <?= isset($id_materia) ? (($verificado == 0) ? 'selected' : '') : ""; ?>>Não
-                    </option>
-                </select>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="exampleFormControlInput1" class="form-label" id="lblProfessor">Professor</label>
-                <select class="form-select" name="option-professor" aria-label="Default select example"
-                    id="selectProfessor" name="option-disciplina" value="<?= isset($id_materia) ? $disciplina : "" ?>">>
-
-                    <option>Selecione um professor</option>
-                    <option value="1" <?= isset($id_materia) ? (($idVerificado == 1) ? 'selected' : '') : ''; ?>>Gerson
-                        - Sociologia</option>
-                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 2) ? 'selected' : '') : ''; ?>>Rita -
-                        Matemática</option>
-                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 3) ? 'selected' : '') : ''; ?>>
-                        Patrícia - Física</option>
-                    <option value="2" <?= isset($id_materia) ? (($idVerificado == 4) ? 'selected' : '') : ''; ?>>Kátia -
-                        Geografia</option>
 
 
                 </select>
@@ -213,9 +157,7 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
     $formDesc = filter_input(INPUT_POST, 'txt-desc', FILTER_SANITIZE_STRING);
     $formDisc = filter_input(INPUT_POST, 'option-disciplina');
     $formMateria = filter_input(INPUT_POST, 'txt-materia');
-    $formVerificado = filter_input(INPUT_POST, 'option-verificado');
-    $formProfessor = filter_input(INPUT_POST, 'option-professor');
-    $data = date('Y/m/d');
+    $data = date('d/m/Y');
 
     $imagem = $_FILES['imagem']['name'];
     $temp_imagem = $_FILES['imagem']['tmp_name'];
@@ -224,21 +166,31 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
 
     //estabelecer conversa com class categoria
     include_once '../class/materia.php';
+    include_once '../class/usuario.php';
     $materia = new Materia();
+    $usuario = new Usuario();
 
     $decodedWithoutUTF8 = urldecode($formMateria);
     $decodedWithUTF8 = utf8_encode($decodedWithoutUTF8);
+
+    $dadosUsuario = $usuario->pegarDadosUsuario($_SESSION['usuario']);
+
+    foreach ($dadosUsuario as $mostrar) {
+        $nome = $mostrar['nome'];
+        $last_view = $mostrar['last_view'];
+        $id_professor = $mostrar['id_professor'];
+        $id_usuario = $mostrar['id_usuario'];
+    }
 
     //enviar dados para atributos
     $materia->setTitulo($formTitulo);
     $materia->setDescricao($formDesc);
     $materia->setDisciplina($formDisc);
     $materia->setMateria($decodedWithUTF8);
-    $materia->setIdVerificado($formProfessor);
-    $materia->setVerificado($formVerificado);
     $materia->setData($data);
     $materia->setImagem($imagem);
     $materia->setTempImagem($temp_imagem);
+    $materia->setIdUsuario($id_usuario);
 
 
     if (strstr('.jpg;.jpeg;.png', $extensao)) {
@@ -295,8 +247,6 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
     $materia->setDescricao($formDesc);
     $materia->setDisciplina($formDisc);
     $materia->setMateria($decodedWithUTF8);
-    $materia->setIdVerificado($formProfessor);
-    $materia->setVerificado($formVerificado);
     $materia->setData($data);
     $materia->setId_Materia($id_materia);
     $materia->setImagem($imagem);

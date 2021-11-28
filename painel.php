@@ -23,8 +23,6 @@ foreach ($top4materias as $mostrarTop4Materias) {
     $imagem = $mostrarTop4Materias['imagem'];
 }
 
-
-
 ?>
 
 <center>
@@ -43,12 +41,12 @@ foreach ($top4materias as $mostrarTop4Materias) {
 <?php
 if ($id_professor == null) {
 
-    $horaAtual = date('H');
+    $horaAtual = date('H') - 1;
     $recepcao;
 
-    if ($horaAtual >= 6) {
+    if ($horaAtual >= 6 && $horaAtual < 12) {
         $recepcao = "<h1>Bom dia, ";
-    } else if ($horaAtual >= 12) {
+    } else if ($horaAtual >= 12 && $horaAtual < 18) {
         $recepcao = "<h1>Boa tarde, ";
     } else {
         $recepcao = "<h1>Boa noite, ";
@@ -64,45 +62,36 @@ if ($id_professor == null) {
 
 <div class="col-sm-12 col-12">&nbsp;</div>
 
-
-<?php
-
-if ($last_view == null) {
-    echo '<h3>Recomendações</h3>
-
-    <div class="col-sm-12 col-12">&nbsp;</div>
-    
-    <div class="col-sm-12">
-        <div class="row">'; ?>
-<?php foreach ($top4materias as $mostrarTop4Materias) {
+<h3>Recomendações</h3>
 
 
 
-    ?>
-<div class="col-sm-3">
-    <div class="card shadow" style="border: none !important;">
-        <?= $mostrarTop4Materias['imagem'] != null ? '<img class="card-img-top img-fluid"
+<div class="col-sm-12 col-12">&nbsp;</div>
+
+<div class="col-sm-12">
+    <div class="row">
+        <?php foreach ($top4materias as $mostrarTop4Materias) { ?>
+        <div class="col-sm-3">
+            <div class="card shadow" style="border: none !important;">
+                <?= $mostrarTop4Materias['imagem'] != null ? '<img class="card-img-top img-fluid"
             src="./img/capas/' . $mostrarTop4Materias['imagem'] . '"
             alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="d-flex align-items-center justify-content-center">Image not found</div>' ?>
-        <div class="card-body">
-            <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Materias['titulo'], 0, 21);
-                                                echo ($tituloCortado . '...')  ?></h5>
-            <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 96);
-                                                echo ($descricaoCortada . '...') ?></p>
-            <a href="./materia/<?= $mostrarTop4Materias['url'] ?>" class="btn btn-primary w-100">Acessar</a>
-        </div>
+                <div class="card-body">
+                    <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Materias['titulo'], 0, 21);
+                                                    echo ($tituloCortado . '...')  ?></h5>
+                    <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 96);
+                                                    echo ($descricaoCortada . '...') ?></p>
+                    <form method="POST"><a type="submit" href="?p=materias&url=<?= $mostrarTop4Materias['url'] ?>"
+                            class="btn btn-primary w-100">Acessar</a></form>
+                </div>
+            </div>
+            <div class="col-md-12">&nbsp;</div>
+        </div> <?php } ?>
     </div>
-    <div class="col-md-12">&nbsp;</div>
-</div> <?php } ?> <?php echo '
-        </div>
-    </div>
-    <div class="col-sm-12 col-12">&nbsp;</div>
-    <div class="col-sm-12 col-12">&nbsp;</div>';
-                        }
+</div>
+<div class="col-sm-12 col-12">&nbsp;</div>
 
 
-
-                            ?>
 <h3>Meus salvos</h3>
 
 <div class="col-sm-12 col-12">&nbsp;</div>
@@ -163,3 +152,31 @@ if ($last_view == null) {
     </div>
     <div class="col-sm-12 col-12">&nbsp;</div>
     <div class="col-sm-12 col-12">&nbsp;</div>
+    <div class="d-flex justify-content-between align-items-center">
+
+        <h3>Histórico </h3>
+        <a href="" class="float-right">Histórico completo</a>
+    </div>
+
+    <div class="col-sm-12 col-12">&nbsp;</div>
+
+    <div class="col-sm-12">
+        <div class="row">
+            <?php foreach ($top4materias as $mostrarTop4Materias) { ?>
+            <div class="col-sm-3">
+                <div class="card shadow" style="border: none !important;">
+                    <?= $mostrarTop4Materias['imagem'] != null ? '<img class="card-img-top img-fluid"
+            src="./img/capas/' . $mostrarTop4Materias['imagem'] . '"
+            alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="d-flex align-items-center justify-content-center">Image not found</div>' ?>
+                    <div class="card-body">
+                        <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Materias['titulo'], 0, 21);
+                                                        echo ($tituloCortado . '...')  ?></h5>
+                        <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 96);
+                                                        echo ($descricaoCortada . '...') ?></p>
+                        <a href="./materia/<?= $mostrarTop4Materias['url'] ?>" class="btn btn-primary w-100">Acessar</a>
+                    </div>
+                </div>
+                <div class="col-md-12">&nbsp;</div>
+            </div> <?php } ?>
+        </div>
+    </div>

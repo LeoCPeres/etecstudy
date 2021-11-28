@@ -23,7 +23,8 @@ foreach ($disciplinas as $mostrarDisc) {
 
     <link rel="stylesheet" href="./css/styles.css" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
@@ -34,10 +35,13 @@ foreach ($disciplinas as $mostrarDisc) {
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark navedit fixed-top" style="background-color: #0103ab !important; color: red !important">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark navedit fixed-top"
+        style="background-color: #0103ab !important; color: red !important">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img src="./images/logo.png" alt="" /></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -46,11 +50,12 @@ foreach ($disciplinas as $mostrarDisc) {
                         <a class="nav-link active" aria-current="page" href="./">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?p=calouro">Área do calouro</a>
+                        <a class="nav-link" href="calouro">Área do calouro</a>
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             Disciplinas
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -59,7 +64,8 @@ foreach ($disciplinas as $mostrarDisc) {
                             foreach ($disciplinas as $mostrarDisc) {
 
                             ?>
-                                <li><a class="dropdown-item" href="<?= $mostrarDisc['id_disc'] ?> "><?= $mostrarDisc['disciplina'] ?></a></li>
+                            <li><a class="dropdown-item"
+                                    href="<?= $mostrarDisc['id_disc'] ?> "><?= $mostrarDisc['disciplina'] ?></a></li>
 
 
                             <?php } ?>
@@ -76,9 +82,9 @@ foreach ($disciplinas as $mostrarDisc) {
                         <?php
                         if (!isset($_SESSION['usuario']) && !isset($_SESSION['admin']) && !isset($_SESSION['professor'])) :
                         ?>
-                            <li class="nav-item">
-                                <a href="./login/" class="nav-link" style="color: white">Login</a>
-                            </li>
+                        <li class="nav-item">
+                            <a href="./login/" class="nav-link" style="color: white">Login</a>
+                        </li>
                         <?php
                         endif;
                         ?>
@@ -87,25 +93,27 @@ foreach ($disciplinas as $mostrarDisc) {
                         if (isset($_SESSION['usuario']) || isset($_SESSION['admin']) || isset($_SESSION['professor'])) :
 
                         ?>
-                            <li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
-                                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="https://avatars.githubusercontent.com/u/69376610?v=4" alt="" class="user-letter">
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a href="#" class="dropdown-item">Perfil</a></li>
-                                    <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
+                        <li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
+                            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <img src="https://avatars.githubusercontent.com/u/69376610?v=4" alt=""
+                                    class="user-letter">
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a href="#" class="dropdown-item">Perfil</a></li>
+                                <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
 
-                                </ul>
-                            </li>
+                            </ul>
+                        </li>
                         <?php
                         endif;
                         ?>
                         <?php
                         if (isset($_SESSION['usuario']) || isset($_SESSION['admin'])) :
                         ?>
-                            <li class="nav-item">
-                                <a href="./admin" class="nav-link" style="color: white">Admin</a>
-                            </li>
+                        <li class="nav-item">
+                            <a href="./admin" class="nav-link" style="color: white">Admin</a>
+                        </li>
                         <?php
                         endif;
                         ?>
@@ -178,7 +186,8 @@ foreach ($disciplinas as $mostrarDisc) {
         <!-- Optional JavaScript; choose one of the two! -->
 
         <!-- Option 1: Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
         </script>
 
         <!-- Option 2: Separate Popper and Bootstrap JS -->

@@ -14,8 +14,7 @@ class Materia
     private $visitas;
     private $url;
     private $materia;
-    private $verificado;
-    private $idVerificado;
+    private $id_usuario;
     private $imagem;
     private $temp_imagem;
     private $con;
@@ -35,6 +34,10 @@ class Materia
     function getData()
     {
         return $this->data;
+    }
+    function getUsuario()
+    {
+        return $this->id_usuario;
     }
     function getDisciplina()
     {
@@ -64,15 +67,6 @@ class Materia
     {
         return $this->id_disc;
     }
-    function getVerificado()
-    {
-        return $this->verificado;
-    }
-    function getIdVerificado()
-    {
-        return $this->idVerificado;
-    }
-
     function setId_Materia($id_materia)
     {
         $this->id_materia = $id_materia;
@@ -117,14 +111,11 @@ class Materia
     {
         $this->url = $url;
     }
-    function setVerificado($verificado)
+    function setIdUsuario($id_usuario)
     {
-        $this->verificado = $verificado;
+        $this->id_usuario = $id_usuario;
     }
-    function setIdVerificado($idVerificado)
-    {
-        $this->idVerificado = $idVerificado;
-    }
+
 
     function salvar()
     {
@@ -132,7 +123,7 @@ class Materia
             $this->con = new Conectar();
             $this->ct = new Controles();
 
-            $sql = "INSERT INTO materia VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO materia VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $executar = $this->con->prepare($sql);
 
@@ -142,11 +133,10 @@ class Materia
             $executar->bindValue(4, $this->ct->montarUrl($this->titulo, $this->id_materia));
             $executar->bindValue(5, $this->disciplina);
             $executar->bindValue(6, $this->visitas);
-            $executar->bindValue(7, $this->verificado);
-            $executar->bindValue(8, $this->materia);
-            $executar->bindValue(9, $this->idVerificado);
-            $executar->bindValue(10, $this->imagem);
-            $executar->bindValue(11, $this->temp_imagem);
+            $executar->bindValue(7, $this->materia);
+            $executar->bindValue(8, $this->imagem);
+            $executar->bindValue(9, $this->temp_imagem);
+            $executar->bindValue(10, $this->id_usuario);
 
             if ($executar->execute() == 1) {
                 $this->ct->enviarArquivo($this->temp_imagem, "../img/capas/" . $this->imagem, $this->imagem);
@@ -163,7 +153,7 @@ class Materia
     {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT * FROM materia WHERE id_materia = ?";
+            $sql = "SELECT * FROM materia WHERE id_materia = ? inner join disciplinas ON disciplinas.id_disc = materia.id_disc";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $id_materia);
 
@@ -181,9 +171,28 @@ class Materia
     {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT * FROM materia WHERE titulo = ? ";
+            $sql = "SELECT * FROM materia WHERE titulo = ? inner join disciplinas ON disciplinas.id_disc = materia.id_disc";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $titulo);
+
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    function ConsultarPorUrl($url)
+    {
+        try {
+            $this->con = new Conectar();
+            $sql = "SELECT * FROM materia WHERE url = ? inner join disciplinas ON disciplinas.id_disc = materia.id_disc";
+            $executar = $this->con->prepare($sql);
+            $executar->bindValue(1, $url);
 
 
             if ($executar->execute() == 1) {
@@ -200,7 +209,7 @@ class Materia
     {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT * FROM materia";
+            $sql = "SELECT * FROM materia inner join disciplinas ON disciplinas.id_disc = materia.id_disc";
             $executar = $this->con->prepare($sql);
 
 
@@ -218,7 +227,7 @@ class Materia
     {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT * FROM materia order by id_materia DESC limit 4 ";
+            $sql = "SELECT * FROM materia inner join disciplinas ON disciplinas.id_disc = materia.id_disc order by id_materia DESC limit 4 ";
             $executar = $this->con->prepare($sql);
 
 
@@ -244,13 +253,12 @@ class Materia
                 descricao = ?, 
                 data = ?, 
                 url = ?, 
-                disciplina = ?, 
-                visitas = ?, 
-                verificado = ?, 
+                id_disc = ?, 
+                visitas = ?,  
                 materia = ?, 
-                idVerificado = ?,
                 imagem = ?,
-                temp_imagem = ? 
+                temp_imagem = ?,
+                id_usuario_inclusao = ?
             WHERE id_materia = ?";
 
             $executar = $this->con->prepare($sql);
@@ -261,12 +269,11 @@ class Materia
             $executar->bindValue(4, $this->ct->montarUrl($this->titulo, $this->id_materia));
             $executar->bindValue(5, $this->disciplina);
             $executar->bindValue(6, $this->visitas);
-            $executar->bindValue(7, $this->verificado);
-            $executar->bindValue(8, $this->materia);
-            $executar->bindValue(9, $this->idVerificado);
-            $executar->bindValue(12, $this->id_materia);
-            $executar->bindValue(10, $this->imagem);
-            $executar->bindValue(11, $this->temp_imagem);
+            $executar->bindValue(7, $this->materia);
+            $executar->bindValue(11, $this->id_materia);
+            $executar->bindValue(8, $this->imagem);
+            $executar->bindValue(9, $this->temp_imagem);
+            $executar->bindValue(10, $this->id_usuario);
 
             if ($executar->execute() == 1) {
                 $this->ct->enviarArquivo($this->temp_imagem, "../img/capas/" . $this->imagem, $this->imagem);
