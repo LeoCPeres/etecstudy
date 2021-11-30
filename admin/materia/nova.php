@@ -23,6 +23,9 @@ if (isset($id_materia)) {
         $materia = $mostrar['materia'];
         $disciplina = $mostrar['disciplina'];
         $id_imagem = $mostrar['imagem'];
+        $id_disc = $mostrar['id_disc'];
+        $imagem1 = $mostrar['imagem'];
+        $temp_imagem1 = $mostrar['temp_imagem'];
     }
 }
 
@@ -34,21 +37,10 @@ if (isset($id_materia)) {
     <div class="col-md-12">&nbsp;</div>
 
     <form method="POST" enctype="multipart/form-data" name="formsalvar" id="formSalvar">
-        <div class="row">
-            <div class="col-sm-8">
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Título</label>
-                    <input type="text" required class="form-control" id="exampleFormControlInput1" name="txt-titulo"
-                        minlength="10" placeholder="Título da matéria" value="<?= isset($id_materia) ? $titulo : "" ?>">
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Imagem de capa</label>
-                    <input class="form-control input-file" id="imagem" name="imagem" type="file" id="imagem"
-                        name="imagem">
-                </div>
-            </div>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Título</label>
+            <input type="text" required class="form-control" id="exampleFormControlInput1" name="txt-titulo"
+                minlength="10" placeholder="Título da matéria" value="<?= isset($id_materia) ? $titulo : "" ?>">
         </div>
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Descrição</label>
@@ -65,7 +57,7 @@ if (isset($id_materia)) {
 
                 </label>
                 <select class="form-select" aria-label="Default select example" name="option-disciplina"
-                    value="<?= isset($id_materia) ? $disciplina : "" ?>">>
+                    value="<?= isset($id_materia) ? $id_disc : "" ?>">>
 
                     <option>Selecione uma disciplina</option>
                     <?php
@@ -77,7 +69,7 @@ if (isset($id_materia)) {
                     ?>
 
                     <option value=<?= $mostrarDisc['id_disc'] ?>
-                        <?= isset($id_materia) ? (($disciplina == $mostrarDisc['id_disc']) ? 'selected' : '') : ''; ?>>
+                        <?= isset($id_disc) ? (($id_disc == $mostrarDisc['id_disc']) ? 'selected' : '') : ''; ?>>
                         <?= $mostrarDisc['disciplina'] ?>
                     </option>
 
@@ -85,6 +77,18 @@ if (isset($id_materia)) {
 
 
                 </select>
+            </div>
+            <div class="col-sm-4">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Mapa mental - (opcional)</label>
+                    <input class="form-control input-file" id="pdf" name="pdf" type="file">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Imagem de capa</label>
+                    <input class="form-control input-file" id="imagem" name="imagem" type="file" required>
+                </div>
             </div>
         </div>
         <div class="mb-3">
@@ -121,6 +125,8 @@ if (isset($id_materia)) {
                 </div>
             </div>
         </div>
+
+
 
         <div class="modal fade" id="modal-save-disciplina" tabindex="-1" aria-labelledby="modal-save-disciplina"
             aria-hidden="true">
@@ -164,6 +170,11 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
     $extensao = strtolower(pathinfo($imagem, PATHINFO_EXTENSION));
     $imagem = uniqid(time()) . "." . $extensao;
 
+    $pdf = $_FILES['pdf']['name'];
+    $temp_pdf = $_FILES['pdf']['tmp_name'];
+    $extensaoPDF = strtolower(pathinfo($pdf, PATHINFO_EXTENSION));
+    $pdf = uniqid(time()) . "." . $extensaoPDF;
+
     //estabelecer conversa com class categoria
     include_once '../class/materia.php';
     include_once '../class/usuario.php';
@@ -191,9 +202,13 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
     $materia->setImagem($imagem);
     $materia->setTempImagem($temp_imagem);
     $materia->setIdUsuario($id_usuario);
+    if ($pdf != null) {
+        $materia->setPDF($pdf);
+        $materia->setTempPDF($temp_pdf);
+    }
 
 
-    if (strstr('.jpg;.jpeg;.png', $extensao)) {
+    if (strstr('.jpg;.jpeg;.png;.pdf', $extensao) && strstr('.jpg;.jpeg;.png;.pdf', $extensaoPDF)) {
         //efetuar cadastro com msg
         if ($materia->salvar()) {
 
@@ -233,7 +248,9 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
     $imagem = $_FILES['imagem']['name'];
     $temp_imagem = $_FILES['imagem']['tmp_name'];
     $extensao = strtolower(pathinfo($imagem, PATHINFO_EXTENSION));
-    $imagem = uniqid(time()) . "." . $extensao;
+    $extensaoJaExistente = explode(".", $imagem1);
+    $extensaoComPonto = '.' . $extensaoJaExistente[1];
+    $imagem == null ? null : $imagem = uniqid(time()) . "." . $extensao;
 
     $decodedWithoutUTF8 = urldecode($formMateria);
     $decodedWithUTF8 = utf8_encode($decodedWithoutUTF8);
@@ -249,10 +266,12 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
     $materia->setMateria($decodedWithUTF8);
     $materia->setData($data);
     $materia->setId_Materia($id_materia);
-    $materia->setImagem($imagem);
-    $materia->setTempImagem($temp_imagem);
+    $materia->setImagem($imagem == null ? $imagem1 : $imagem);
+    $materia->setTempImagem($temp_imagem == null ? $temp_imagem1 : $temp_imagem);
 
-    if (strstr('.jpg;.jpeg;.png', $extensao)) {
+
+
+    if (strstr('.jpg;.jpeg;.png', ($extensao === '' ? $extensaoComPonto : $extensao))) {
         //efetuar cadastro com msg
         if ($materia->editar()) {
 
@@ -276,9 +295,6 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
 <?php }
     }
 }
-
-
-
 
 
 ?>

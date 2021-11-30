@@ -44,7 +44,7 @@ if (isset($pesquisa)) {
 
         <div class="col-md-12">&nbsp;</div>
 
-        <h1 class="title"> <?= isset($pesquisa) ? "Resultados para '" . $titulo . "'" : "Últimas matérias" ?></h1>
+        <h1 class="title"> <?= isset($pesquisa) ? "Resultados para '" . $titulo . "'" : "Todas as matérias" ?></h1>
         <div class="col-md-12">&nbsp;</div>
         <div class="col-md-12">&nbsp;</div>
 

@@ -52,9 +52,17 @@ if ($id_professor == null) {
         $recepcao = "<h1>Boa noite, ";
     }
 
-
     echo $recepcao . $nome . '!</h1>';
 } else {
+    $horaAtual = date('H') - 1;
+    $recepcao;
+    if ($horaAtual >= 6 && $horaAtual < 12) {
+        $recepcao = "<h1>Bom dia, ";
+    } else if ($horaAtual >= 12 && $horaAtual < 18) {
+        $recepcao = "<h1>Boa tarde, ";
+    } else {
+        $recepcao = "<h1>Boa noite, ";
+    }
     echo $recepcao . 'professor ' . $nome . '!</h1>';
 }
 
@@ -62,7 +70,58 @@ if ($id_professor == null) {
 
 <div class="col-sm-12 col-12">&nbsp;</div>
 
-<h3>Recomendações</h3>
+<?php
+
+if ($id_professor != null) {
+    echo '<h3>Ações do professor</h3><div class="col-sm-12 col-12">&nbsp;</div><div class="row">
+    <div class="col-md-3 col-12">
+        <a href="./admin/?p=materia/nova" class="personalized-card">
+            <div class="card shadow" style="border: none !important;">
+                <img src="./images/write.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Escrever matéria</h5>
+                    </center>
+
+                </div>
+            </div>
+        </a>
+        <div class="col-md-12">&nbsp;</div>
+    </div>
+    <div class="col-md-3 col-12">
+        <a href="" class="personalized-card" disabled>
+            <div class="card shadow" style="border: none !important;">
+                <img src="./images/eye.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Matérias mais vistas</h5>
+                    </center>
+
+                </div>
+            </div>
+        </a>
+        <div class="col-md-12">&nbsp;</div>
+    </div>
+    <div class="col-md-3 col-12" >
+        <a href="./admin/?p=disciplina/consultar" class="personalized-card">
+            <div class="card shadow" style="border: none !important;">
+                <img src="./images/write.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <div class="card-body">
+                    <center>
+                        <h5 class="card-title">Adicionar disciplina</h5>
+                    </center>
+
+                </div>
+            </div>
+        </a>
+        <div class="col-md-12">&nbsp;</div>
+    </div>
+</div>';
+}
+
+?>
+
+<h3>Matérias recomendadas</h3>
 
 
 
@@ -79,10 +138,35 @@ if ($id_professor == null) {
                 <div class="card-body">
                     <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Materias['titulo'], 0, 21);
                                                     echo ($tituloCortado . '...')  ?></h5>
-                    <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 96);
+                    <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 85);
                                                     echo ($descricaoCortada . '...') ?></p>
-                    <form method="POST"><a type="submit" href="?p=materias&url=<?= $mostrarTop4Materias['url'] ?>"
-                            class="btn btn-primary w-100">Acessar</a></form>
+                    <form method="POST">
+                        <div class="row">
+                            <?php
+
+                                if ($materia->ConsultarPorProfessor($id_professor) != false) {
+                                    echo '<div class="col-sm-9">
+                                <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
+                                    class="btn btn-primary w-100">Acessar</a>
+                                <div class="col-sm-12">&nbsp;</div>
+                            </div>
+                            <div class="col-sm-3">
+                                <a type="submit"
+                                    href="./admin/?p=materia/nova&id_materia=' . $mostrarTop4Materias['id_materia'] . '"
+                            class="btn btn-warning w-100"><img src="./images/write.png" alt=""
+                                style="max-width: 24px"></a>
+                        </div>';
+                                } else {
+                                    echo '<div class="col-sm-12">
+                                    <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
+                                        class="btn btn-primary w-100">Acessar</a>
+                                    <div class="col-sm-12">&nbsp;</div>
+                                </div>';
+                                }
+
+                                ?>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="col-md-12">&nbsp;</div>
@@ -171,9 +255,23 @@ if ($id_professor == null) {
                     <div class="card-body">
                         <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Materias['titulo'], 0, 21);
                                                         echo ($tituloCortado . '...')  ?></h5>
-                        <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 96);
+                        <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 85);
                                                         echo ($descricaoCortada . '...') ?></p>
-                        <a href="./materia/<?= $mostrarTop4Materias['url'] ?>" class="btn btn-primary w-100">Acessar</a>
+                        <form method="POST">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <a type="submit" href="?p=materias&url=<?= $mostrarTop4Materias['url'] ?>"
+                                        class="btn btn-primary w-100">Acessar</a>
+                                    <div class="col-sm-12">&nbsp;</div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <a type="submit"
+                                        href="./admin/?p=materia/nova&id_materia=<?= $mostrarTop4Materias['id_materia'] ?>?>"
+                                        class="btn btn-warning w-100"><img src="./images/write.png" alt=""
+                                            style="max-width: 24px"></a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="col-md-12">&nbsp;</div>

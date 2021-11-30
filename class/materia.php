@@ -17,6 +17,8 @@ class Materia
     private $id_usuario;
     private $imagem;
     private $temp_imagem;
+    private $pdf;
+    private $temp_pdf;
     private $con;
 
     function getId_Materia()
@@ -50,6 +52,14 @@ class Materia
     function getTempImagem()
     {
         return $this->temp_imagem;
+    }
+    function getPDF()
+    {
+        return $this->pdf;
+    }
+    function getTempPDF()
+    {
+        return $this->temp_pdf;
     }
     function getVisitas()
     {
@@ -91,6 +101,14 @@ class Materia
     {
         $this->temp_imagem = $temp_imagem;
     }
+    function setPDF($pdf)
+    {
+        $this->pdf = $pdf;
+    }
+    function setTempPDF($temp_pdf)
+    {
+        $this->temp_pdf = $temp_pdf;
+    }
     function setDisciplina($disciplina)
     {
         $this->disciplina = $disciplina;
@@ -123,7 +141,7 @@ class Materia
             $this->con = new Conectar();
             $this->ct = new Controles();
 
-            $sql = "INSERT INTO materia VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO materia VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             $executar = $this->con->prepare($sql);
 
@@ -137,9 +155,12 @@ class Materia
             $executar->bindValue(8, $this->imagem);
             $executar->bindValue(9, $this->temp_imagem);
             $executar->bindValue(10, $this->id_usuario);
+            $executar->bindValue(11, $this->pdf);
+            $executar->bindValue(12, $this->temp_pdf);
 
             if ($executar->execute() == 1) {
                 $this->ct->enviarArquivo($this->temp_imagem, "../img/capas/" . $this->imagem, $this->imagem);
+                $this->ct->enviarArquivo($this->temp_pdf, "../img/pdf/" . $this->pdf, $this->pdf);
                 return true;
             } else {
                 return false;
@@ -153,7 +174,7 @@ class Materia
     {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT * FROM materia WHERE id_materia = ? inner join disciplinas ON disciplinas.id_disc = materia.id_disc";
+            $sql = "SELECT * FROM materia inner join disciplinas ON disciplinas.id_disc = materia.id_disc WHERE id_materia = ? ";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $id_materia);
 
@@ -171,7 +192,7 @@ class Materia
     {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT * FROM materia WHERE titulo = ? inner join disciplinas ON disciplinas.id_disc = materia.id_disc";
+            $sql = "SELECT * FROM materia inner join disciplinas ON disciplinas.id_disc = materia.id_disc WHERE titulo = ? ";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $titulo);
 
@@ -190,9 +211,28 @@ class Materia
     {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT * FROM materia WHERE url = ? inner join disciplinas ON disciplinas.id_disc = materia.id_disc";
+            $sql = "SELECT * FROM materia join disciplinas ON disciplinas.id_disc = materia.id_disc inner join usuario ON usuario.id_usuario = materia.id_usuario_inclusao  WHERE url = ?";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $url);
+
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    function ConsultarPorProfessor($id_professor)
+    {
+        try {
+            $this->con = new Conectar();
+            $sql = "SELECT * FROM materia WHERE id_usuario_inclusao = ?";
+            $executar = $this->con->prepare($sql);
+            $executar->bindValue(1, $id_professor);
 
 
             if ($executar->execute() == 1) {
