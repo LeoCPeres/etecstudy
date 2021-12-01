@@ -3,8 +3,17 @@ $pesquisa = filter_input(INPUT_GET, 'pesquisa');
 
 include_once('./class/materia.php');
 include_once('./class/disciplina.php');
+include_once('./class/usuario.php');
 $materia = new Materia();
 $disc = new Disciplina();
+$user = new Usuario();
+
+$dadosUsuario = $user->pegarDadosUsuario($_SESSION['usuario']);
+foreach ($dadosUsuario as $mostrar) {
+    $nome = $mostrar['nome'];
+    $last_view = $mostrar['last_view'];
+    $id_professor = $mostrar['id_professor'];
+}
 
 if (isset($pesquisa)) {
     $dados = $materia->ConsultarPorTitulo($pesquisa);
@@ -14,6 +23,7 @@ if (isset($pesquisa)) {
         $disciplina = $mostrar['disciplina'];
         $id_materia = $mostrar['id_materia'];
         $url = $mostrar['url'];
+        $id_usuario_inclusao = $mostrar['id_usuario_inclusao'];
     }
 } else {
     $dados = $materia->ConsultarTodos();
@@ -23,6 +33,7 @@ if (isset($pesquisa)) {
         $disciplina = $mostrar['disciplina'];
         $id_materia = $mostrar['id_materia'];
         $url = $mostrar['url'];
+        $id_usuario_inclusao = $mostrar['id_usuario_inclusao'];
     }
 }
 ?>
@@ -79,10 +90,10 @@ if (isset($pesquisa)) {
 
                     </a>
                 </div>
-                <div class="col-md-1 col-1">
-                    <a href="./admin/?p=materia/nova&id_materia=<?= $mostrar['id_materia'] ?>" class="btn-search"><img
+                <?= $id_usuario_inclusao == $id_professor ? '<div class="col-md-1 col-1">
+                    <a href="./admin/?p=materia/nova&id_materia=' . $mostrar['id_materia'] . '" class="btn-search"><img
                             src="./images/write.png" class="img-fluid p-3"></a>
-                </div>
+                </div>' : '' ?>
             </div>
             <div class="col-md-12">&nbsp;</div>
         </div>

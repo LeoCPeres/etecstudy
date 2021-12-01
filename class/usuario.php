@@ -207,6 +207,28 @@ class Usuario
         }
     }
 
+    function salvarHistorico()
+    {
+        try {
+            $this->con = new Conectar();
+
+            $sql = "UPDATE usuario SET last_view = ? WHERE id_usuario = ?";
+
+            $executar = $this->con->prepare($sql);
+
+            $executar->bindValue(1, $this->last_view);
+            $executar->bindValue(2, $this->id_usuario);
+
+            if ($executar->execute() == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
     function verificaUsuarioExistente()
     {
         try {

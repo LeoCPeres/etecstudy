@@ -11,6 +11,7 @@ foreach ($dadosUsuario as $mostrar) {
     $nome = $mostrar['nome'];
     $last_view = $mostrar['last_view'];
     $id_professor = $mostrar['id_professor'];
+    $id_usuario = $mostrar['id_usuario'];
 }
 
 $top4materias = $materia->ConsultarTop4();
@@ -239,14 +240,69 @@ if ($id_professor != null) {
     <div class="d-flex justify-content-between align-items-center">
 
         <h3>Histórico </h3>
-        <a href="" class="float-right">Histórico completo</a>
+        <a href="?p=historicoCompleto" class="float-right">Histórico completo</a>
     </div>
 
     <div class="col-sm-12 col-12">&nbsp;</div>
 
     <div class="col-sm-12">
         <div class="row">
-            <?php foreach ($top4materias as $mostrarTop4Materias) { ?>
+            <?php
+
+            include_once './class/historico.php';
+
+            $hist = new Historico();
+            $hist->setIdUsuario($id_usuario);
+            $top4Historico = $hist->consultarHistoricoTop4();
+            if ($top4Historico != null) {
+                foreach ($top4Historico as $mostrarTop4Historico) { ?>
+            <div class="col-sm-3">
+                <div class="card shadow" style="border: none !important;">
+                    <?= $mostrarTop4Historico['imagem'] != null ? '<img class="card-img-top img-fluid"
+                src="./img/capas/' . $mostrarTop4Historico['imagem'] . '"
+                alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="d-flex align-items-center justify-content-center">Image not found</div>' ?>
+                    <div class="card-body">
+                        <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Historico['titulo'], 0, 21);
+                                                            echo ($tituloCortado . '...')  ?></h5>
+                        <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Historico['descricao'], 0, 85);
+                                                            echo ($descricaoCortada . '...') ?></p>
+                        <form method="POST">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <a type="submit" href="?p=materias&url=<?= $mostrarTop4Historico['url'] ?>"
+                                        class="btn btn-primary w-100">Acessar</a>
+                                    <div class="col-sm-12">&nbsp;</div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <a type="submit"
+                                        href="./admin/?p=materia/nova&id_materia=<?= $mostrarTop4Historico['id_materia'] ?>?>"
+                                        class="btn btn-warning w-100"><img src="./images/write.png" alt=""
+                                            style="max-width: 24px"></a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+            <?php }
+            } else { ?>
+
+            <center>
+                <div class="col-sm-12 col-12 mt-3 mb-3">
+                    <img src="./images/triste.png" alt="" class="img-fluid" width="10%" style="opacity: 0.6"
+                        loading="lazy" />
+                    <h2>Oops!</h2>
+                    <h5 style="max-width: 400px">Parece que você ainda não visualizou nenhuma matéria!</h5>
+                </div>
+            </center>
+
+            <?php } ?>
+
+
+
+
+            <!-- <?php foreach ($top4materias as $mostrarTop4Materias) { ?>
             <div class="col-sm-3">
                 <div class="card shadow" style="border: none !important;">
                     <?= $mostrarTop4Materias['imagem'] != null ? '<img class="card-img-top img-fluid"
@@ -254,9 +310,9 @@ if ($id_professor != null) {
             alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="d-flex align-items-center justify-content-center">Image not found</div>' ?>
                     <div class="card-body">
                         <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Materias['titulo'], 0, 21);
-                                                        echo ($tituloCortado . '...')  ?></h5>
+                                                    echo ($tituloCortado . '...')  ?></h5>
                         <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 85);
-                                                        echo ($descricaoCortada . '...') ?></p>
+                                                    echo ($descricaoCortada . '...') ?></p>
                         <form method="POST">
                             <div class="row">
                                 <div class="col-sm-9">
@@ -275,6 +331,6 @@ if ($id_professor != null) {
                     </div>
                 </div>
                 <div class="col-md-12">&nbsp;</div>
-            </div> <?php } ?>
+            </div> <?php } ?> -->
         </div>
     </div>

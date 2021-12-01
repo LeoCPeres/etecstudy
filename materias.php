@@ -1,10 +1,33 @@
 <?php
-
+date_default_timezone_set('America/Sao_Paulo');
 $titulo_materia_url = filter_input(INPUT_GET, 'url');
 
 include_once './class/materia.php';
+include_once './class/usuario.php';
 $materia = new Materia();
+$user = new Usuario();
 
+$dadosUsuario = $user->pegarDadosUsuario($_SESSION['usuario']);
+foreach ($dadosUsuario as $mostrar) {
+    $nome = $mostrar['nome'];
+    $last_view = $mostrar['last_view'];
+    $id_professor = $mostrar['id_professor'];
+    $id_usuario = $mostrar['id_usuario'];
+}
+
+if (isset($_SESSION['usuario'])) {
+    $historico;
+
+    if ($last_view == null) {
+        $historico = $titulo_materia_url . ';';
+    } else {
+        $historico = $last_view . $titulo_materia_url . ';';
+    }
+
+    $user->setLastView($historico);
+    $user->setId($id_usuario);
+    $user->salvarHistorico();
+}
 
 if ($titulo_materia_url != '') {
     $dados = $materia->ConsultarPorUrl($titulo_materia_url);
@@ -16,10 +39,25 @@ if ($titulo_materia_url != '') {
         $data = $mostrar['data'];
         $nome = $mostrar['nome'] . ' ' . $mostrar['sobrenome'];
         $pdf = $mostrar['pdf'];
+        $visitas = $mostrar['visitas'];
+
+
+
+        include_once './class/historico.php';
+        $hist = new Historico();
+
+        $acesso = date('d/m/Y') . ' ' . date('H:i');
+
+        $hist->setUrl($titulo_materia_url);
+        $hist->setIdUsuario($id_usuario);
+        $hist->setAcesso($acesso);
+        $hist->salvarHistorico();
     }
 } else {
     return;
 }
+
+
 
 ?>
 <center>

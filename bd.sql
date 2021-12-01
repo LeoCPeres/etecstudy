@@ -35,6 +35,21 @@ CREATE TABLE materia (
 );
 
  CREATE TABLE disciplinas (
-    id_disc INT NOT NULL PRIMARY KEY,
+    id_disc INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     disciplina varchar(50)
+)
+
+CREATE TABLE historico (
+    id_hist INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    url VARCHAR(110),
+    id_usuario int NOT NULL,
+    acesso varchar(16)
+    foreign key (id_usuario) references usuario(id_usuario)
+)
+
+CREATE TABLE salvos (
+    id_salvo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    url VARCHAR(110),
+    id_usuario int NOT NULL,
+    foreign key (id_usuario) references usuario(id_usuario)
 )

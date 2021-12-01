@@ -4,7 +4,7 @@
 $id_materia = filter_input(INPUT_GET, 'id_materia');
 date_default_timezone_set('America/Sao_Paulo');
 
-include_once '../class/Materia.php';
+include_once '../class/materia.php';
 include_once '../class/disciplina.php';
 $materia = new Materia();
 $disc = new Disciplina();
@@ -26,6 +26,7 @@ if (isset($id_materia)) {
         $id_disc = $mostrar['id_disc'];
         $imagem1 = $mostrar['imagem'];
         $temp_imagem1 = $mostrar['temp_imagem'];
+        $urlAnterior = $mostrar['url'];
     }
 }
 
@@ -44,7 +45,7 @@ if (isset($id_materia)) {
         </div>
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Descrição</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" name="txt-desc" minlength="25"
+            <input type="text" class="form-control" id="exampleFormControlInput1" name="txt-desc" minlength="88"
                 placeholder="Descrição da matéria" value="<?= isset($id_materia) ? $descricao : "" ?>">
         </div>
         <div class="row">
@@ -208,7 +209,7 @@ if (filter_input(INPUT_POST, 'btn-salvar')) {
     }
 
 
-    if (strstr('.jpg;.jpeg;.png;.pdf', $extensao) && strstr('.jpg;.jpeg;.png;.pdf', $extensaoPDF)) {
+    if (strstr('.jpg;.jpeg;.png;.pdf', $extensao) || strstr('.jpg;.jpeg;.png;.pdf', $extensaoPDF)) {
         //efetuar cadastro com msg
         if ($materia->salvar()) {
 
@@ -243,7 +244,7 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
     $formVerificado = filter_input(INPUT_POST, 'option-verificado');
     $formProfessor = filter_input(INPUT_POST, 'option-professor');
     $id_materia = filter_input(INPUT_GET, 'id_materia');
-    $data = date('Y/m/d');
+    $data = date('d/m/Y');
 
     $imagem = $_FILES['imagem']['name'];
     $temp_imagem = $_FILES['imagem']['tmp_name'];
@@ -258,6 +259,18 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
     //estabelecer conversa com class categoria
     include_once '../class/materia.php';
     $materia = new Materia();
+    include_once '../class/usuario.php';
+    $usuario = new Usuario();
+    include_once '../class/historico.php';
+    $hist = new Historico();
+    $dadosUsuario = $usuario->pegarDadosUsuario($_SESSION['usuario']);
+
+    foreach ($dadosUsuario as $mostrar) {
+        $nome = $mostrar['nome'];
+        $last_view = $mostrar['last_view'];
+        $id_professor = $mostrar['id_professor'];
+        $id_usuario = $mostrar['id_usuario'];
+    }
 
     //enviar dados para atributos
     $materia->setTitulo($formTitulo);
@@ -268,6 +281,10 @@ if (filter_input(INPUT_POST, 'btn-editar')) {
     $materia->setId_Materia($id_materia);
     $materia->setImagem($imagem == null ? $imagem1 : $imagem);
     $materia->setTempImagem($temp_imagem == null ? $temp_imagem1 : $temp_imagem);
+    $materia->setIdUsuario($id_materia);
+    $hist->setUrlAnterior($urlAnterior);
+    $hist->setUrl($formTitulo);
+    $hist->editarHistorico();
 
 
 

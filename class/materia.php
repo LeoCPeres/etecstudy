@@ -2,6 +2,7 @@
 
 include_once('Conectar.php');
 include_once('Controles.php');
+include_once('Historico.php');
 
 class Materia
 {
@@ -20,6 +21,7 @@ class Materia
     private $pdf;
     private $temp_pdf;
     private $con;
+    private $hist;
 
     function getId_Materia()
     {
@@ -148,7 +150,7 @@ class Materia
             $executar->bindValue(1, $this->titulo);
             $executar->bindValue(2, $this->descricao);
             $executar->bindValue(3, $this->data);
-            $executar->bindValue(4, $this->ct->montarUrl($this->titulo, $this->id_materia));
+            $executar->bindValue(4, $this->ct->montarUrl($this->titulo));
             $executar->bindValue(5, $this->disciplina);
             $executar->bindValue(6, $this->visitas);
             $executar->bindValue(7, $this->materia);
@@ -158,9 +160,32 @@ class Materia
             $executar->bindValue(11, $this->pdf);
             $executar->bindValue(12, $this->temp_pdf);
 
+
             if ($executar->execute() == 1) {
                 $this->ct->enviarArquivo($this->temp_imagem, "../img/capas/" . $this->imagem, $this->imagem);
                 $this->ct->enviarArquivo($this->temp_pdf, "../img/pdf/" . $this->pdf, $this->pdf);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    function atualizaVisitas()
+    {
+        try {
+            $this->con = new Conectar();
+
+            $sql = "UPDATE materia SET visitas = ? WHERE id_materia = ?";
+
+            $executar = $this->con->prepare($sql);
+
+            $executar->bindValue(1, $this->visitas);
+            $executar->bindValue(2, $this->id_materia);
+
+            if ($executar->execute() == 1) {
                 return true;
             } else {
                 return false;
@@ -219,7 +244,7 @@ class Materia
             if ($executar->execute() == 1) {
                 return $executar->fetchAll();
             } else {
-                return false;
+                return $executar->fetchAll();
             }
         } catch (PDOException $exc) {
             echo $exc->getMessage();
@@ -286,6 +311,7 @@ class Materia
         try {
             $this->con = new Conectar();
             $this->ct = new Controles();
+            $this->hist = new Historico();
 
             $sql =
                 "UPDATE materia SET 
@@ -306,7 +332,7 @@ class Materia
             $executar->bindValue(1, $this->titulo);
             $executar->bindValue(2, $this->descricao);
             $executar->bindValue(3, $this->data);
-            $executar->bindValue(4, $this->ct->montarUrl($this->titulo, $this->id_materia));
+            $executar->bindValue(4, $this->ct->montarUrl($this->titulo));
             $executar->bindValue(5, $this->disciplina);
             $executar->bindValue(6, $this->visitas);
             $executar->bindValue(7, $this->materia);
@@ -314,6 +340,7 @@ class Materia
             $executar->bindValue(8, $this->imagem);
             $executar->bindValue(9, $this->temp_imagem);
             $executar->bindValue(10, $this->id_usuario);
+
 
             if ($executar->execute() == 1) {
                 $this->ct->enviarArquivo($this->temp_imagem, "../img/capas/" . $this->imagem, $this->imagem);
