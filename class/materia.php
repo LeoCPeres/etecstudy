@@ -217,9 +217,28 @@ class Materia
     {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT * FROM materia inner join disciplinas ON disciplinas.id_disc = materia.id_disc WHERE titulo = ? ";
+            $sql = "SELECT * FROM materia inner join disciplinas ON disciplinas.id_disc = materia.id_disc WHERE titulo LIKE ? ";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $titulo);
+
+
+            if ($executar->execute() == 1) {
+                return $executar->fetchAll();
+            } else {
+                return false;
+            }
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+        }
+    }
+
+    function ConsultarPorDisc($id_disc)
+    {
+        try {
+            $this->con = new Conectar();
+            $sql = "SELECT * FROM materia inner join disciplinas ON disciplinas.id_disc = materia.id_disc WHERE disciplinas.id_disc = ? ";
+            $executar = $this->con->prepare($sql);
+            $executar->bindValue(1, $id_disc);
 
 
             if ($executar->execute() == 1) {
@@ -319,8 +338,7 @@ class Materia
                 descricao = ?, 
                 data = ?, 
                 url = ?, 
-                id_disc = ?, 
-                visitas = ?,  
+                id_disc = ?,  
                 materia = ?, 
                 imagem = ?,
                 temp_imagem = ?,
@@ -334,12 +352,11 @@ class Materia
             $executar->bindValue(3, $this->data);
             $executar->bindValue(4, $this->ct->montarUrl($this->titulo));
             $executar->bindValue(5, $this->disciplina);
-            $executar->bindValue(6, $this->visitas);
-            $executar->bindValue(7, $this->materia);
-            $executar->bindValue(11, $this->id_materia);
-            $executar->bindValue(8, $this->imagem);
-            $executar->bindValue(9, $this->temp_imagem);
-            $executar->bindValue(10, $this->id_usuario);
+            $executar->bindValue(6, $this->materia);
+            $executar->bindValue(10, $this->id_materia);
+            $executar->bindValue(7, $this->imagem);
+            $executar->bindValue(8, $this->temp_imagem);
+            $executar->bindValue(9, $this->id_usuario);
 
 
             if ($executar->execute() == 1) {

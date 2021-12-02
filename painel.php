@@ -1,5 +1,12 @@
 ﻿<?php
 
+if (!$_SESSION['usuario']) {
+    echo '<meta http-equiv="refresh" content="0;URL=./">';
+    return;
+}
+
+
+
 include_once('./class/usuario.php');
 include_once('./class/materia.php');
 $materia = new Materia();
@@ -28,12 +35,12 @@ foreach ($top4materias as $mostrarTop4Materias) {
 
 <center>
     <div class="col-md-8 col-12">
-        <form class="input-group mb-3" method="POST">
-            <input type="text" class="form-control" placeholder="Pesquise um assunto" aria-label="Recipient's username"
-                aria-describedby="button-addon2" />
-            <a href="?p=pesquisar" class="btn btn-primary" type="submit" id="button-addon2" name="btn-pesquisar">
+        <form class="input-group mb-3" method="GET" action="pesquisar.php">
+            <input type="text" class="form-control" placeholder="Pesquise um assunto" name="pesquisa"
+                aria-label="Recipient's username" aria-describedby="button-addon2" />
+            <button class="btn btn-primary" id="button-addon2" type="submit">
                 <i class="bi bi-search"></i>
-            </a>
+            </button>
         </form>
     </div>
 </center>
@@ -78,10 +85,10 @@ if ($id_professor != null) {
     <div class="col-md-3 col-12">
         <a href="./admin/?p=materia/nova" class="personalized-card">
             <div class="card shadow" style="border: none !important;">
-                <img src="./images/write.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <img src="./images/pencil.svg" class="img-fluid p-3" alt="..." style="width: 115px; height: 115px; align-self: center; opacity: 0.7">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Escrever matéria</h5>
+                        <h5 class="card-title" style="opacity: 0.7">Escrever matéria</h5>
                     </center>
 
                 </div>
@@ -90,12 +97,12 @@ if ($id_professor != null) {
         <div class="col-md-12">&nbsp;</div>
     </div>
     <div class="col-md-3 col-12">
-        <a href="" class="personalized-card" disabled>
+        <a href="?p=minhasMaterias" class="personalized-card" disabled>
             <div class="card shadow" style="border: none !important;">
-                <img src="./images/eye.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <img src="./images/eye.png" class="img-fluid p-3" alt="..." style="width: 115px; height: 115px; align-self: center; opacity: 0.7">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Matérias mais vistas</h5>
+                        <h5 class="card-title" style="opacity: 0.7">Minhas matérias</h5>
                     </center>
 
                 </div>
@@ -106,10 +113,10 @@ if ($id_professor != null) {
     <div class="col-md-3 col-12" >
         <a href="./admin/?p=disciplina/consultar" class="personalized-card">
             <div class="card shadow" style="border: none !important;">
-                <img src="./images/write.png" class="img-fluid p-3" alt="..." style="width: 130px; height: 130px; align-self: center">
+                <img src="./images/card-checklist.svg" class="img-fluid p-3" alt="..." style="width: 115px; height: 115px; align-self: center; opacity: 0.7">
                 <div class="card-body">
                     <center>
-                        <h5 class="card-title">Adicionar disciplina</h5>
+                        <h5 class="card-title" style="opacity: 0.7">Adicionar disciplina</h5>
                     </center>
 
                 </div>
@@ -137,16 +144,16 @@ if ($id_professor != null) {
             src="./img/capas/' . $mostrarTop4Materias['imagem'] . '"
             alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="d-flex align-items-center justify-content-center">Image not found</div>' ?>
                 <div class="card-body">
-                    <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Materias['titulo'], 0, 21);
+                    <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Materias['titulo'], 0, 18);
                                                     echo ($tituloCortado . '...')  ?></h5>
-                    <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 85);
-                                                    echo ($descricaoCortada . '...') ?></p>
-                    <form method="POST">
-                        <div class="row">
-                            <?php
+                    <p class="card-text etc" style="height: 110px;"><?php $descricaoCortada = substr($mostrarTop4Materias['descricao'], 0, 85);
+                                                                        echo ($descricaoCortada . '...') ?></p>
+                    <form method="POST" class="row">
 
-                                if ($materia->ConsultarPorProfessor($id_professor) != false) {
-                                    echo '<div class="col-sm-9">
+                        <?php
+
+                            if ($materia->ConsultarPorProfessor($id_professor) != false) {
+                                echo '<div class="col-sm-9">
                                 <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
                                     class="btn btn-primary w-100">Acessar</a>
                                 <div class="col-sm-12">&nbsp;</div>
@@ -154,19 +161,19 @@ if ($id_professor != null) {
                             <div class="col-sm-3">
                                 <a type="submit"
                                     href="./admin/?p=materia/nova&id_materia=' . $mostrarTop4Materias['id_materia'] . '"
-                            class="btn btn-warning w-100"><img src="./images/write.png" alt=""
+                            class="btn btn-warning" style="margin-left: -10px;"><img src="./images/write.png" alt=""
                                 style="max-width: 24px"></a>
                         </div>';
-                                } else {
-                                    echo '<div class="col-sm-12">
+                            } else {
+                                echo '<div class="col-sm-12">
                                     <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
                                         class="btn btn-primary w-100">Acessar</a>
                                     <div class="col-sm-12">&nbsp;</div>
                                 </div>';
-                                }
+                            }
 
-                                ?>
-                        </div>
+                            ?>
+
                     </form>
                 </div>
             </div>
@@ -176,56 +183,70 @@ if ($id_professor != null) {
 </div>
 <div class="col-sm-12 col-12">&nbsp;</div>
 
+<div class="d-flex justify-content-between align-items-center">
 
-<h3>Meus salvos</h3>
+    <h3>Últimos salvos </h3>
+    <a href="?p=salvosCompleto" class="float-right">Todos os salvos</a>
+</div>
 
 <div class="col-sm-12 col-12">&nbsp;</div>
 
 <div class="col-sm-12">
     <div class="row">
-        <div class="col-sm-3">
-            <!-- <div class="card">
-                <img class="card-img-top img-fluid" src="https://t5z6q4c2.rocketcdn.me/wp-content/uploads/2019/10/segunda-guerra-mundial-causas-paises-envolvidos-e-consequencias-1024x614.jpg" alt="Card image cap" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title etc">Segunda Guerra Mundial asdadasd</h5>
-                    <p class="card-text etc">A Segunda Guerra Mundial foi um conflito militar global que durou de 1939 a 1945, envolvendo a maioria das naÃ§Ãµes do mundo incluindo todas as grandes potÃªncias â€” organ alianÃ§as militares opostas: os Aliados e o Eixo...</p>
-                    <a href="#" class="btn btn-primary w-100">Acessar</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card">
-                <img class="card-img-top img-fluid" src="https://t5z6q4c2.rocketcdn.me/wp-content/uploads/2019/10/segunda-guerra-mundial-causas-paises-envolvidos-e-consequencias-1024x614.jpg" alt="Card image cap" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title etc">Segunda Guerra Mundial asdadasd</h5>
-                    <p class="card-text etc">A Segunda Guerra Mundial foi um conflito militar global que durou de 1939 a 1945, envolvendo a maioria das naÃ§Ãµes do mundo incluindo todas as grandes potÃªncias â€” organ alianÃ§as militares opostas: os Aliados e o Eixo...</p>
-                    <a href="#" class="btn btn-primary w-100">Acessar</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card">
-                <img class="card-img-top img-fluid" src="https://t5z6q4c2.rocketcdn.me/wp-content/uploads/2019/10/segunda-guerra-mundial-causas-paises-envolvidos-e-consequencias-1024x614.jpg" alt="Card image cap" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title etc">Segunda Guerra Mundial asdadasd</h5>
-                    <p class="card-text etc">A Segunda Guerra Mundial foi um conflito militar global que durou de 1939 a 1945, envolvendo a maioria das naÃ§Ãµes do mundo incluindo todas as grandes potÃªncias â€” organ alianÃ§as militares opostas: os Aliados e o Eixo...</p>
-                    <a href="#" class="btn btn-primary w-100">Acessar</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card">
-                <img class="card-img-top img-fluid" src="https://t5z6q4c2.rocketcdn.me/wp-content/uploads/2019/10/segunda-guerra-mundial-causas-paises-envolvidos-e-consequencias-1024x614.jpg" alt="Card image cap" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title etc">Segunda Guerra Mundial asdadasd</h5>
-                    <p class="card-text etc">A Segunda Guerra Mundial foi um conflito militar global que durou de 1939 a 1945, envolvendo a maioria das naÃ§Ãµes do mundo incluindo todas as grandes potÃªncias â€” organ alianÃ§as militares opostas: os Aliados e o Eixo...</p>
-                    <a href="#" class="btn btn-primary w-100">Acessar</a>
-                </div>
-            </div>
-        </div> -->
 
+        <?php
 
+        include_once './class/salvos.php';
+
+        $salvos = new Salvos();
+        $salvos->setIdUsuario($id_usuario);
+        $top4Salvos = $salvos->consultarSalvosTop4();
+        if ($top4Salvos != null) {
+            foreach ($top4Salvos as $consultarSalvosTop4) { ?>
+        <div class="col-sm-3">
+            <div class="card shadow" style="border: none !important;">
+                <?= $consultarSalvosTop4['imagem'] != null ? '<img class="card-img-top img-fluid"
+        src="./img/capas/' . $consultarSalvosTop4['imagem'] . '"
+        alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="d-flex align-items-center justify-content-center">Image not found</div>' ?>
+                <div class="card-body">
+                    <h5 class="card-title etc"><?php $tituloCortado = substr($consultarSalvosTop4['titulo'], 0, 18);
+                                                        echo ($tituloCortado . '...')  ?></h5>
+                    <p class="card-text etc" style="height: 110px"><?php $descricaoCortada = substr($consultarSalvosTop4['descricao'], 0, 85);
+                                                                            echo ($descricaoCortada . '...') ?></p>
+                    <form method="POST">
+                        <div class="row">
+                            <?php
+
+                                    if ($materia->ConsultarPorProfessor($id_professor) != false) {
+                                        echo '<div class="col-sm-9">
+                                <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
+                                    class="btn btn-primary w-100">Acessar</a>
+                                <div class="col-sm-12">&nbsp;</div>
+                            </div>
+                            <div class="col-sm-3">
+                                <a type="submit"
+                                    href="./admin/?p=materia/nova&id_materia=' . $mostrarTop4Materias['id_materia'] . '"
+                            class="btn btn-warning" style="margin-left: -10px;"><img src="./images/write.png" alt=""
+                                style="max-width: 24px"></a>
+                        </div>';
+                                    } else {
+                                        echo '<div class="col-sm-12">
+                                    <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
+                                        class="btn btn-primary w-100">Acessar</a>
+                                    <div class="col-sm-12">&nbsp;</div>
+                                </div>';
+                                    }
+
+                                    ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-12">&nbsp;</div>
         </div>
+        <?php }
+        } else { ?>
+
         <center>
             <div class="col-sm-12 col-12 mt-3 mb-3">
                 <img src="./images/triste.png" alt="" class="img-fluid" width="10%" style="opacity: 0.6"
@@ -234,6 +255,8 @@ if ($id_professor != null) {
                 <h5 style="max-width: 400px">Parece que você ainda não visualizou nenhuma matéria!</h5>
             </div>
         </center>
+
+        <?php } ?>
     </div>
     <div class="col-sm-12 col-12">&nbsp;</div>
     <div class="col-sm-12 col-12">&nbsp;</div>
@@ -262,23 +285,35 @@ if ($id_professor != null) {
                 src="./img/capas/' . $mostrarTop4Historico['imagem'] . '"
                 alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="d-flex align-items-center justify-content-center">Image not found</div>' ?>
                     <div class="card-body">
-                        <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Historico['titulo'], 0, 21);
+                        <h5 class="card-title etc"><?php $tituloCortado = substr($mostrarTop4Historico['titulo'], 0, 18);
                                                             echo ($tituloCortado . '...')  ?></h5>
-                        <p class="card-text etc"><?php $descricaoCortada = substr($mostrarTop4Historico['descricao'], 0, 85);
-                                                            echo ($descricaoCortada . '...') ?></p>
+                        <p class="card-text etc" style="height: 110px"><?php $descricaoCortada = substr($mostrarTop4Historico['descricao'], 0, 85);
+                                                                                echo ($descricaoCortada . '...') ?></p>
                         <form method="POST">
                             <div class="row">
-                                <div class="col-sm-9">
-                                    <a type="submit" href="?p=materias&url=<?= $mostrarTop4Historico['url'] ?>"
+                                <?php
+
+                                        if ($materia->ConsultarPorProfessor($id_professor) != false) {
+                                            echo '<div class="col-sm-9">
+                                <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
+                                    class="btn btn-primary w-100">Acessar</a>
+                                <div class="col-sm-12">&nbsp;</div>
+                            </div>
+                            <div class="col-sm-3">
+                                <a type="submit"
+                                    href="./admin/?p=materia/nova&id_materia=' . $mostrarTop4Materias['id_materia'] . '"
+                            class="btn btn-warning" style="margin-left: -10px;"><img src="./images/write.png" alt=""
+                                style="max-width: 24px"></a>
+                        </div>';
+                                        } else {
+                                            echo '<div class="col-sm-12">
+                                    <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
                                         class="btn btn-primary w-100">Acessar</a>
                                     <div class="col-sm-12">&nbsp;</div>
-                                </div>
-                                <div class="col-sm-3">
-                                    <a type="submit"
-                                        href="./admin/?p=materia/nova&id_materia=<?= $mostrarTop4Historico['id_materia'] ?>?>"
-                                        class="btn btn-warning w-100"><img src="./images/write.png" alt=""
-                                            style="max-width: 24px"></a>
-                                </div>
+                                </div>';
+                                        }
+
+                                        ?>
                             </div>
                         </form>
                     </div>

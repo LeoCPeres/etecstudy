@@ -4,6 +4,13 @@ include_once('./class/usuario.php');
 include_once('./class/materia.php');
 $user = new Usuario();
 
+
+if (!$_SESSION['usuario']) {
+    echo '<meta http-equiv="refresh" content="0;URL=./">';
+    return;
+}
+
+
 $dadosUsuario = $user->pegarDadosUsuario($_SESSION['usuario']);
 foreach ($dadosUsuario as $mostrar) {
     $nome = $mostrar['nome'];
@@ -56,5 +63,8 @@ foreach ($dadosUsuario as $mostrar) {
             <?php } ?>
         </tbody>
     </table>
+
 </div>
+<div class="col-sm-12">&nbsp;</div>
+<div class="col-sm-12">&nbsp;</div>
 </div>

@@ -65,7 +65,8 @@ foreach ($disciplinas as $mostrarDisc) {
 
                             ?>
                             <li><a class="dropdown-item"
-                                    href="<?= $mostrarDisc['id_disc'] ?> "><?= $mostrarDisc['disciplina'] ?></a></li>
+                                    href="?p=pesquisar&id_disc=<?= $mostrarDisc['id_disc'] ?> "><?= $mostrarDisc['disciplina'] ?></a>
+                            </li>
 
 
                             <?php } ?>
@@ -104,15 +105,6 @@ foreach ($disciplinas as $mostrarDisc) {
                                 <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
 
                             </ul>
-                        </li>
-                        <?php
-                        endif;
-                        ?>
-                        <?php
-                        if (isset($_SESSION['usuario']) || isset($_SESSION['admin'])) :
-                        ?>
-                        <li class="nav-item">
-                            <a href="./admin" class="nav-link" style="color: white">Admin</a>
                         </li>
                         <?php
                         endif;

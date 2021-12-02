@@ -6,6 +6,12 @@ session_start();
 //     exit();
 // }
 
+if (!$_SESSION['usuario']) {
+    echo '<meta http-equiv="refresh" content="0;URL=../">';
+    return;
+}
+
+
 include_once '../class/disciplina.php';
 $disc = new Disciplina();
 
@@ -134,7 +140,8 @@ foreach ($disciplinas as $mostrarDisc) {
 
                             ?>
                             <li><a class="dropdown-item"
-                                    href="<?= $mostrarDisc['id_disc'] ?> "><?= $mostrarDisc['disciplina'] ?></a></li>
+                                    href="../?p=pesquisar&id_disc=<?= $mostrarDisc['id_disc'] ?> "><?= $mostrarDisc['disciplina'] ?></a>
+                            </li>
 
 
                             <?php } ?>

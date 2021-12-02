@@ -311,11 +311,12 @@ body {
     font-weight: 500;
     transition: 0.2s;
     border: none;
-    font-size: 13px;
+    font-size: 10px;
   }
 
   .btn-oauth img {
     width: 18px;
+    margin-right: 3px;
   }
 
   .btn-oauth:hover {

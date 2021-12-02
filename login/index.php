@@ -12,7 +12,8 @@ session_start();
 
     <link rel="stylesheet" href="../css/styles.css" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
@@ -22,20 +23,20 @@ session_start();
     <title>Etec Study - Login</title>
 
     <script type="text/javascript">
-        window.onload = campos;
+    window.onload = campos;
 
 
-        function campos() {
-            var txtemail = document.getElementById('txtemail');
-            var txtsenha = document.getElementById('txtsenha');
-            var btnsubmit = document.getElementById('btnsubmit');
+    function campos() {
+        var txtemail = document.getElementById('txtemail');
+        var txtsenha = document.getElementById('txtsenha');
+        var btnsubmit = document.getElementById('btnsubmit');
 
-            if (txtemail.value == "" || txtsenha.value == "") {
-                btnsubmit.disabled = true;
-            } else {
-                btnsubmit.disabled = false;
-            }
+        if (txtemail.value == "" || txtsenha.value == "") {
+            btnsubmit.disabled = true;
+        } else {
+            btnsubmit.disabled = false;
         }
+    }
     </script>
 </head>
 
@@ -60,17 +61,18 @@ session_start();
                     <div class="body-login">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Email</label>
-                            <input oninput="campos()" placeholder="Ex: joaopedrosilva@gmail.com" type="email" class="form-control email-login" id="txtemail" name="txtemail" aria-describedby="emailHelp" required>
+                            <input oninput="campos()" placeholder="Ex: joaopedrosilva@gmail.com" type="email"
+                                class="form-control email-login" id="txtemail" name="txtemail"
+                                aria-describedby="emailHelp" required>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Senha</label>
-                            <input oninput="campos()" id="txtsenha" placeholder="Senha de pelo menos 8 caracteres" type="password" class="form-control email-login" name="txtsenha" aria-describedby="emailHelp" required>
+                            <input oninput="campos()" id="txtsenha" placeholder="Senha de pelo menos 8 caracteres"
+                                type="password" class="form-control email-login" name="txtsenha"
+                                aria-describedby="emailHelp" required>
                         </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Mantenha-me conectado</label>
-                        </div>
-                        <input type="submit" id="btnsubmit" class="btn btn-primary" name="btn-login" value="Entrar"></input>
+                        <input type="submit" id="btnsubmit" class="btn btn-primary" name="btn-login"
+                            value="Entrar"></input>
                     </div>
 
                     <div class="footer-login">
@@ -94,7 +96,8 @@ session_start();
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
 </body>
 
@@ -117,7 +120,7 @@ if (filter_input(INPUT_POST, 'btn-login')) {
         $_SESSION['usuario'] = $usuario;
 
 ?>
-        <meta http-equiv="refresh" CONTENT="1;URL=../">
+<meta http-equiv="refresh" CONTENT="1;URL=../">
 <?php
     } else {
         $_SESSION['nao-autenticado'] = true;
