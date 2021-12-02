@@ -236,7 +236,7 @@ class Materia
     {
         try {
             $this->con = new Conectar();
-            $sql = "SELECT * FROM materia inner join disciplinas ON disciplinas.id_disc = materia.id_disc WHERE disciplinas.id_disc = ? ";
+            $sql = "SELECT * FROM materia inner join disciplinas ON disciplinas.id_disc = materia.id_disc WHERE materia.id_disc = ? ";
             $executar = $this->con->prepare($sql);
             $executar->bindValue(1, $id_disc);
 

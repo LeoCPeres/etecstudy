@@ -94,7 +94,7 @@ alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="
         <div class="col-sm-12 col-12 mt-3 mb-3">
             <img src="./images/triste.png" alt="" class="img-fluid" width="10%" style="opacity: 0.6" loading="lazy" />
             <h2>Oops!</h2>
-            <h5 style="max-width: 400px">Parece que você ainda não visualizou nenhuma matéria!</h5>
+            <h5 style="max-width: 400px">Parece que você ainda não salvou nenhuma matéria!</h5>
         </div>
     </center>
 

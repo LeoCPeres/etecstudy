@@ -12,6 +12,70 @@ foreach ($disciplinas as $mostrarDisc) {
     $disciplinaText = $mostrarDisc['disciplina'];
 }
 
+
+$pesquisa = "%" . trim(filter_input(INPUT_GET, 'pesquisa')) . "%";
+$id_disc = trim(filter_input(INPUT_GET, 'id_disc'));
+
+if (strlen($pesquisa) >= 3) {
+    $id_disc = null;
+}
+
+if ($id_disc != null) {
+    $pesquisa = null;
+}
+
+include_once('./class/materia.php');
+include_once('./class/disciplina.php');
+include_once('./class/usuario.php');
+$materia = new Materia();
+$disc = new Disciplina();
+$user = new Usuario();
+
+if (isset($_SESSION['usuario'])) {
+
+    $dadosUsuario = $user->pegarDadosUsuario($_SESSION['usuario']);
+    foreach ($dadosUsuario as $mostrar) {
+        $nome = $mostrar['nome'];
+        $last_view = $mostrar['last_view'];
+        $id_professor = $mostrar['id_professor'];
+    }
+}
+
+if ($pesquisa != null) {
+    echo '<script>console.log("teste1")</script>';
+    $dados = $materia->ConsultarPorTitulo($pesquisa);
+    foreach ($dados as $mostrar) {
+        $titulo = $mostrar['titulo'];
+        $descricao = $mostrar['descricao'];
+        $disciplina = $mostrar['disciplina'];
+        $id_materia = $mostrar['id_materia'];
+        $url = $mostrar['url'];
+        $id_usuario_inclusao = $mostrar['id_usuario_inclusao'];
+    }
+} else if ($id_disc != null) {
+    echo '<script>console.log("teste")</script>';
+    $dados = $materia->ConsultarPorDisc($id_disc);
+    foreach ($dados as $mostrar) {
+        $titulo = $mostrar['titulo'];
+        $descricao = $mostrar['descricao'];
+        $disciplina = $mostrar['disciplina'];
+        $id_materia = $mostrar['id_materia'];
+        $url = $mostrar['url'];
+        $id_usuario_inclusao = $mostrar['id_usuario_inclusao'];
+    }
+} else {
+
+    $dados = $materia->ConsultarTodos();
+    foreach ($dados as $mostrar) {
+        $titulo = $mostrar['titulo'];
+        $descricao = $mostrar['descricao'];
+        $disciplina = $mostrar['disciplina'];
+        $id_materia = $mostrar['id_materia'];
+        $url = $mostrar['url'];
+        $id_usuario_inclusao = $mostrar['id_usuario_inclusao'];
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -91,23 +155,45 @@ foreach ($disciplinas as $mostrarDisc) {
                         ?>
 
                         <?php
-                        if (isset($_SESSION['usuario']) || isset($_SESSION['admin']) || isset($_SESSION['professor'])) :
+                        if (isset($_SESSION['usuario'])) {
+                            include_once './class/usuario.php';
+                            $usuario = new Usuario();
+                            $usuario->setEmail($_SESSION['usuario']);
+                            $user = $usuario->verificaUsuarioExistente();
+                            foreach ($user as $mostrar) {
+                                $id_usuario = $mostrar['id_usuario'];
+                                $imagem = $mostrar['imagem'];
+                                $nome = $mostrar['nome'];
+                            }
 
-                        ?>
-                        <li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
-                            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <img src="https://avatars.githubusercontent.com/u/69376610?v=4" alt=""
-                                    class="user-letter">
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a href="#" class="dropdown-item">Perfil</a></li>
-                                <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
+                            if ($imagem != null) {
+                                echo '<li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
+                                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <img src="./img/users/' . $imagem . '" alt=""
+                                        class="user-letter">
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a href="?p=perfil" class="dropdown-item">Perfil</a></li>
+                                    <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
+    
+                                </ul>
+                            </li>';
+                            } else {
+                                echo '<li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
+                                <a class="nav-link" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <p class="user-letter m-0 p-0">' . substr($nome, 0, 1) . '</p>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a href="?p=perfil" class="dropdown-item">Perfil</a></li>
+                                    <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
+    
+                                </ul>
+                            </li>';
+                            }
+                        }
 
-                            </ul>
-                        </li>
-                        <?php
-                        endif;
                         ?>
                     </ul>
                 </div>
@@ -128,58 +214,6 @@ foreach ($disciplinas as $mostrarDisc) {
         <div class="row" style="margin-top: 10px;">
             <div class="col-md-2">&nbsp;</div>
             <div class="col-md-12">
-                <?php
-                $pesquisa = "%" . trim(filter_input(INPUT_GET, 'pesquisa')) . "%";
-                $id_disc = filter_input(INPUT_GET, 'id_disc');
-
-                include_once('./class/materia.php');
-                include_once('./class/disciplina.php');
-                include_once('./class/usuario.php');
-                $materia = new Materia();
-                $disc = new Disciplina();
-                $user = new Usuario();
-
-                if (isset($_SESSION['usuario'])) {
-                    $dadosUsuario = $user->pegarDadosUsuario($_SESSION['usuario']);
-                    foreach ($dadosUsuario as $mostrar) {
-                        $nome = $mostrar['nome'];
-                        $last_view = $mostrar['last_view'];
-                        $id_professor = $mostrar['id_professor'];
-                    }
-                }
-
-                if (isset($pesquisa)) {
-                    $dados = $materia->ConsultarPorTitulo($pesquisa);
-                    foreach ($dados as $mostrar) {
-                        $titulo = $mostrar['titulo'];
-                        $descricao = $mostrar['descricao'];
-                        $disciplina = $mostrar['disciplina'];
-                        $id_materia = $mostrar['id_materia'];
-                        $url = $mostrar['url'];
-                        $id_usuario_inclusao = $mostrar['id_usuario_inclusao'];
-                    }
-                } else if (isset($id_disc)) {
-                    $dados = $materia->ConsultarPorDisc($id_disc);
-                    foreach ($dados as $mostrar) {
-                        $titulo = $mostrar['titulo'];
-                        $descricao = $mostrar['descricao'];
-                        $disciplina = $mostrar['disciplina'];
-                        $id_materia = $mostrar['id_materia'];
-                        $url = $mostrar['url'];
-                        $id_usuario_inclusao = $mostrar['id_usuario_inclusao'];
-                    }
-                } else {
-                    $dados = $materia->ConsultarTodos();
-                    foreach ($dados as $mostrar) {
-                        $titulo = $mostrar['titulo'];
-                        $descricao = $mostrar['descricao'];
-                        $disciplina = $mostrar['disciplina'];
-                        $id_materia = $mostrar['id_materia'];
-                        $url = $mostrar['url'];
-                        $id_usuario_inclusao = $mostrar['id_usuario_inclusao'];
-                    }
-                }
-                ?>
 
                 <div class="col-md-12 col-12">
                     <div class="container">
@@ -200,14 +234,20 @@ foreach ($disciplinas as $mostrarDisc) {
 
                         <?php
 
-                        if (isset($id_disc)) {
-                            echo '<h1 class="title">Resultados para disciplina "' . $disciplina . '"</h1>';
-                        } else if (isset($pesquisa)) {
+
+                        if ($dados != null && $pesquisa == null) {
+                            $discdisc = $disc->ConsultarPorId($id_disc);
+                            foreach ($discdisc as $dadosDiscConfia) {
+                                $discTextConfia = $dadosDiscConfia['disciplina'];
+                            }
+                            echo '<h1 class="title">Resultados para disciplina "' . $discTextConfia . '"</h1>';
+                        } else if ($dados != null && $pesquisa != null) {
                             $pesquisa = trim($pesquisa, '%');
                             echo '<h1 class="title">Resultados para "' . str_replace('+', '', $pesquisa) . '"</h1>';
-                        } else {
-                            echo '<h1 class="title">Todas as matérias</h1>';
+                        } else if ($dados == null && $pesquisa == null) {
+                            echo '<h1 class="title">Ops! Parece que não temos resultados para isso.</h1>';
                         }
+
 
 
                         ?>

@@ -65,7 +65,7 @@ foreach ($disciplinas as $mostrarDisc) {
 
                             ?>
                             <li><a class="dropdown-item"
-                                    href="?p=pesquisar&id_disc=<?= $mostrarDisc['id_disc'] ?> "><?= $mostrarDisc['disciplina'] ?></a>
+                                    href="pesquisar.php?p=pesquisar&id_disc=<?= $mostrarDisc['id_disc'] ?> "><?= $mostrarDisc['disciplina'] ?></a>
                             </li>
 
 
@@ -91,24 +91,48 @@ foreach ($disciplinas as $mostrarDisc) {
                         ?>
 
                         <?php
-                        if (isset($_SESSION['usuario']) || isset($_SESSION['admin']) || isset($_SESSION['professor'])) :
+                        if (isset($_SESSION['usuario'])) {
+                            include_once './class/usuario.php';
+                            $usuario = new Usuario();
+                            $usuario->setEmail($_SESSION['usuario']);
+                            $user = $usuario->verificaUsuarioExistente();
+                            foreach ($user as $mostrar) {
+                                $id_usuario = $mostrar['id_usuario'];
+                                $imagem = $mostrar['imagem'];
+                                $nome = $mostrar['nome'];
+                            }
+
+                            if ($imagem != null) {
+                                echo '<li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
+                                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <img src="./img/users/' . $imagem . '" alt=""
+                                        class="user-letter">
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a href="?p=perfil" class="dropdown-item">Perfil</a></li>
+                                    <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
+    
+                                </ul>
+                            </li>';
+                            } else {
+                                echo '<li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
+                                <a class="nav-link" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <p class="user-letter m-0 p-0">' . substr($nome, 0, 1) . '</p>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a href="?p=perfil" class="dropdown-item">Perfil</a></li>
+                                    <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
+    
+                                </ul>
+                            </li>';
+                            }
+                        }
 
                         ?>
-                        <li class="nav-item dropdown" style="width: 170px; display: flex; justify-content: flex-end;">
-                            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <img src="https://avatars.githubusercontent.com/u/69376610?v=4" alt=""
-                                    class="user-letter">
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a href="#" class="dropdown-item">Perfil</a></li>
-                                <li><a href="./login/logout.php" class="dropdown-item">Sair</a></li>
 
-                            </ul>
-                        </li>
-                        <?php
-                        endif;
-                        ?>
+
                     </ul>
                 </div>
             </div>

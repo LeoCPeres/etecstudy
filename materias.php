@@ -147,6 +147,12 @@ if (isset($_SESSION['usuario'])) {
                     $nome
                     ?></p>
             </div>
+            <div class="col-sm-3">
+                <p><strong>Visualizações: </strong>
+                    <?=
+                    $visitas
+                    ?></p>
+            </div>
 
         </div>
         <br>
