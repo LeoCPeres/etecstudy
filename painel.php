@@ -152,7 +152,7 @@ if ($id_professor != null) {
 
                         <?php
 
-                            if ($materia->ConsultarPorProfessor($id_professor) != false) {
+                            if ($mostrarTop4Materias['id_usuario_inclusao'] == $id_professor) {
                                 echo '<div class="col-sm-9">
                                 <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
                                     class="btn btn-primary w-100">Acessar</a>
@@ -217,7 +217,7 @@ if ($id_professor != null) {
                         <div class="row">
                             <?php
 
-                                    if ($materia->ConsultarPorProfessor($id_professor) != false) {
+                                    if ($consultarSalvosTop4['id_usuario_inclusao'] == $id_professor) {
                                         echo '<div class="col-sm-9">
                                 <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
                                     class="btn btn-primary w-100">Acessar</a>
@@ -252,7 +252,7 @@ if ($id_professor != null) {
                 <img src="./images/triste.png" alt="" class="img-fluid" width="10%" style="opacity: 0.6"
                     loading="lazy" />
                 <h2>Oops!</h2>
-                <h5 style="max-width: 400px">Parece que você ainda não visualizou nenhuma matéria!</h5>
+                <h5 style="max-width: 400px">Parece que você ainda não salvou nenhuma matéria!</h5>
             </div>
         </center>
 
@@ -293,7 +293,7 @@ if ($id_professor != null) {
                             <div class="row">
                                 <?php
 
-                                        if ($materia->ConsultarPorProfessor($id_professor) != false) {
+                                        if ($mostrarTop4Historico['id_usuario_inclusao'] == $id_professor) {
                                             echo '<div class="col-sm-9">
                                 <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
                                     class="btn btn-primary w-100">Acessar</a>

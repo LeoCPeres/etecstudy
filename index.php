@@ -50,7 +50,7 @@ foreach ($disciplinas as $mostrarDisc) {
                         <a class="nav-link active" aria-current="page" href="./">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="calouro">Área do calouro</a>
+                        <a class="nav-link" href="?p=calouro">Área do calouro</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -75,7 +75,7 @@ foreach ($disciplinas as $mostrarDisc) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Vestibulares</a>
+                        <a class="nav-link" href="?p=vestibulares">Vestibulares</a>
                     </li>
                 </ul>
                 <div class="d-flex">

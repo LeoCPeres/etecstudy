@@ -65,6 +65,7 @@
                     </div>
                     <div class="body-login">
                         <div class="row">
+
                             <div class="col-sm-6 mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Nome</label>
                                 <input oninput="campos()" type="name" class="form-control" id="txtnome" name="txtnome"
@@ -191,5 +192,6 @@ if (filter_input(INPUT_POST, 'btn-cadastro')) {
 ?>
 <meta http-equiv="refresh" CONTENT="1;URL=../login">
 <?php
+    } else {
     }
 }

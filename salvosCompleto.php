@@ -60,7 +60,7 @@ alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="
                     <div class="row">
                         <?php
 
-                                if ($materia->ConsultarPorProfessor($id_professor) != false) {
+                                if ($consultarSalvos['id_usuario_inclusao'] == $id_professor) {
                                     echo '<div class="col-sm-9">
                         <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
                             class="btn btn-primary w-100">Acessar</a>

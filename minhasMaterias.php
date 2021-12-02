@@ -18,6 +18,11 @@ foreach ($dadosUsuario as $mostrar) {
     $id_usuario = $mostrar['id_usuario'];
 }
 
+if ($id_professor == null) {
+    echo '<meta http-equiv="refresh" content="0;URL=./">';
+    return;
+}
+
 $top4materias = $materia->ConsultarTodos();
 foreach ($top4materias as $mostrarTop4Materias) {
     $titulo = $mostrarTop4Materias['titulo'];
@@ -60,7 +65,7 @@ alt="Card image cap" style="height: 200px; object-fit: cover;">' : '<div class="
                     <div class="row">
                         <?php
 
-                                if ($materia->ConsultarPorProfessor($id_professor) != false) {
+                                if ($consultarMaterias['id_usuario_inclusao'] == $id_professor) {
                                     echo '<div class="col-sm-9">
                         <a type="submit" href="?p=materias&url=' . $mostrarTop4Materias['url'] . '"
                             class="btn btn-primary w-100">Acessar</a>

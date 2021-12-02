@@ -59,6 +59,9 @@ session_start();
 
                     </div>
                     <div class="body-login">
+                        <div class="alert alert-danger" role="alert" id="alert" style="display: none;">
+                            Email ou senha incorretos!
+                        </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Email</label>
                             <input oninput="campos()" placeholder="Ex: joaopedrosilva@gmail.com" type="email"
@@ -124,11 +127,14 @@ if (filter_input(INPUT_POST, 'btn-login')) {
 <?php
     } else {
         $_SESSION['nao-autenticado'] = true;
-        echo  '<div class="container">'
-            . '<div class="alert alert-warning" role="alert">'
-            . '<h3>Nome de usuário e/ou senha incorreto(s)</h3>'
-            . '<p>Verifique seu nome de usuário e senha!</p>'
-            . '</div>'
-            . '</div>';
+        echo  '<script>
+        (function (){
+            var alerta = document.getElementById("alert");
+
+            alerta.style.display = "";
+        })();
+        
+    
+        </script>';
     }
 }
